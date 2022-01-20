@@ -1,8 +1,402 @@
-<html>
-    <head>
-        <title>E U K R A S</title>
-    </head>
-<body>
-    <p>E U K R A S</p>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8">
+
+  <!--
+
+  TODO:
+
+  * Read spectrum, divider and confidence data from URL.
+  * Save all spectrums in a cookie.
+  * 
+
+  Base64: https://developer.mozilla.org/en-US/docs/Glossary/Base64
+  -->
+  <head>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+  <script type="module">
+
+import { h, Component, render } from 'https://unpkg.com/preact?module';
+import htm from 'https://unpkg.com/htm?module';
+
+const html = htm.bind(h);
+
+const shuffle = (unshuffled) => unshuffled
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+//  .map(i => i == null ? "/" : ".▁▂▃▄▄▅▆▇█!"[i])
+const sparkline = (zerototens) => zerototens
+    .filter(i => i == null || (i => i >= 0 && i <= 10))
+    .map(i => i == null ? "/" : "0123456789X"[i])
+    .join('');
+
+const encodeBase64 = (str) => {
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+const decodeBase64 = (str) => {
+  return decodeURIComponent(escape(window.atob( str )));
+}
+
+class App extends Component {
+
+    constructor() {
+        super();
+        this.colors = this.getColorScale();
+        this.spectrums = {
+            'covid_19': {
+                id: 'covid_19',
+                name: 'COVID-19',
+                version: '1.0',
+                description: "the Coronavirus Pandemic",
+                statements: [
+                    ['hx', "COVID-19 doesn't exist; it's 100% a hoax"],
+                    ['fl', "COVID-19 is no more dangerous than influenza"],
+                    ['dg', "COVID-19 vaccines pose a greater threat than the disease"],
+                    ['5g', "COVID-19 symptoms are actually caused by 5G towers"],
+                    ['bi', "COVID-19 was created as a bioweapon"],
+                    ['rs', "COVID-19 escaped from a medical research program"],
+                    ['pw', "COVID-19 emergency powers will never be rescinded"],
+                    ['ex', "COVID-19 is less dangerous than we have been told"],
+                    ['nt', "COVID-19 vaccines have not been properly tested"],
+                    ['cs', "COVID-19 cures are being suppressed for profit"],
+                    ['lh', "COVID-19 lockdowns do more harm than good"],
+                    ['ud', "COVID-19 is being exploited to make people mistrust democratic institutions"],
+                    ['dp', "COVID-19 is being exploited to increase polarisation"],
+                    ['cp', "COVID-19 is being exploited to for corporate profit"],
+                    ['ty', "COVID-19 is being exploited to create tyranny"],
+                    ['nb', "COVID-19 vaccines injections contain nanobots"],
+                    ['em', "COVID-19 experts are generally mistaken"],
+                    ['cv', "COVID-19 is cover story for something else that's happening"],
+                    ['mm', "COVID-19 is being misrepresented by journalists"],
+                    ['gc', "COVID-19 is a global conspiracy"],
+                ],
+            },
+            'united_states': {
+                id: 'united_states',
+                name: 'United States',
+                version: '1.0',
+                description: "the United States",
+                statements: [
+                    ['ff', "School shootings can be government 'false flag' operations"],
+                    ['uf', "Aliens have visited Earth but the evidence has been concealed"],
+                    ['gw', "Global warming is a lie propagated by most scientists"],
+                    ['fe', "The world's goverments have covered up the true shape of the earth"],
+                    ['ss', "Influential world leaders are alien shape-shifters"],
+                    ['ch', "Aeroplane trails distribute chemicals that affect people or climate"],
+                    ['ml', "The NASA moon landings were staged in film studios"],
+                    ['wt', "The World Trade Centre attacks were controlled demolitions"],
+                    ['jf', "John F. Kennedy was not shot by Lee Harvey Oswald"],
+                    ['qa', "Political and media elites run widespread paedophilia networks"],
+                    ['mb', "Some national media consistently misrepresents the news"],
+                ],
+            },
+        };
+        this.state = {
+            spectrum: null,
+            format: 'shuffle',
+        };
+        this.checkUrl();
+    }
+
+    checkUrl() {
+        const data = this.readUrl();
+        if ('ID' in data) {
+            this.initialize(data.ID, data);
+        }
+    }
+
+    initialize(spectrumId, statements) {
+        const spectrum = spectrumId in this.spectrums
+            ? this.spectrums[spectrumId]
+            : null;
+        if (spectrum == null) {
+            this.setState({spectrum: null});
+            return;
+        }
+        const useStatements = statements != null ? statements : {};
+        const newStatements = spectrum.statements.map(tuple => {
+            const [key, statement] = tuple;
+            const newConfidence = key in useStatements 
+                ? statements[key]
+               : 5;
+            return [key, statement, newConfidence];
+        });
+        const newSpectrum = {
+            ...spectrum,
+            statements: shuffle(newStatements),
+            format: 'shuffle',
+        };
+        this.setState({spectrum: newSpectrum});
+    }
+
+    getSparkline() {
+        //  Return null for divider, confidence integer for other rows
+        const confidences = this.state.spectrum.statements.map(tuple => {
+            const [key, statement, confidence] = tuple;
+            return key == '__' ? null : confidence;
+        });
+        return sparkline(confidences);
+    }
+
+    getColorScale() {
+        const pastels = ['#FDDFDF', '#FCF7DE', '#DEFDE0', '#DEF3FD', '#F0DEFD'];
+        const scale = chroma.scale(pastels).mode('lrgb').colors(11);
+        return scale;
+    }
+
+    readUrl() {
+        const hash = window.location.hash.slice(1);
+        const uri = decodeBase64(hash);
+        const pairs = uri.split('&').reduce((acc, pair) => {
+            const [key, val] = pair.split('=');
+            acc[key] = Number.isInteger(parseInt(val)) ? parseInt(val) : val;
+            return acc;
+        }, {});
+        return pairs;
+    }
+    
+    getScore() {
+        const sum = this.state.spectrum.statements.reduce((acc, val) => {
+            return acc + val[2];
+        }, 0);
+        const len = this.state.spectrum.statements.length;
+        return Math.round(sum * 10 / len);
+    }
+
+    shuffleStatements() {
+        const spectrum = this.state.spectrum;
+        if (this.spectrum !== null) {
+            this.setState({
+                spectrum: {
+                    ...spectrum,
+                    format: 'shuffle',
+                    statements: shuffle(spectrum.statements),
+                },
+            });
+        }
+    }
+
+    sortByConfidence() {
+        const sorted = this.state.spectrum.statements.sort((a, b) => {
+            const [aKey, aStatement, aConfidence] = a;
+            const [bKey, bStatement, bConfidence] = b;
+            if (aConfidence == bConfidence) {
+                return aStatement > bStatement ? 1 : -1;
+            } else {
+                return aConfidence > bConfidence ? 1 : -1;
+            }
+        });
+        this.setState({
+            spectrum: {
+                ...this.state.spectrum,
+                statements: sorted,
+                format: 'sort',
+            }
+        });
+    }
+
+    setConfidence(key, confidence) {
+        const intConfidence = parseInt(confidence) || 0;
+        const newStatements = this.state.spectrum.statements.map((tuple) => {
+            const [thisKey, thisStatement, thisConfidence] = tuple;
+            return [thisKey, thisStatement, thisKey == key ? intConfidence : thisConfidence];
+        });
+        this.setState({
+            spectrum: {
+                ...this.state.spectrum,
+                statements: newStatements
+            },
+        });
+    }
+
+    writeUrl() {
+        const spectrum = this.state.spectrum;
+        const urlParts = spectrum?.statements.map((tuple) => {
+            const [thisKey, thisStatement, thisConfidence] = tuple;
+            return '&' + thisKey + '=' + thisConfidence;
+        });
+        const data = 'ID=' + spectrum?.id + urlParts.join('');
+        return '?#' + encodeBase64(data);
+    }
+
+    toggleDivider() {
+        if (this.hasDivider()) {
+            this.removeDivider();
+        } else {
+            this.addDivider();
+        }
+    }
+
+    hasDivider() {
+        const spectrum = this.state.spectrum;
+        return spectrum.statements.reduce((acc, val) => {
+            return val[0] == '__' || acc;
+        }, false);
+    }
+
+    addDivider() {
+        const spectrum = this.state.spectrum;
+        this.setState({
+            spectrum: {
+                ...spectrum,
+                statements: [
+                    ...spectrum.statements,
+                    ['__', 'D I V I D E R', 5]
+                ],
+            }
+        });
+    }
+
+    removeDivider() {
+        const spectrum = this.state.spectrum;
+        this.setState({
+            spectrum: {
+                ...spectrum,
+                statements: spectrum.statements.filter(statement => {
+                    return statement[0] != '__';
+                }),
+            }
+        });
+    }
+
+    render() {
+        const spectrum = this.state.spectrum;
+        const overview = spectrum
+            ? (this.getSparkline() + ' ' + this.getScore() + '% v.' + spectrum.version)
+            : '';
+        return html`
+            <div class="page-wrapper">
+            ${!spectrum && html`
+
+            <h1>Conspiracy spectrums</h1>
+
+                <p>When you need to have some clearer conversations about
+                conspiracy theories, try using these <i>conspiracy spectrums</i> to 
+                work out what people are really saying.</p>
+
+                <p style="margin: 2rem;">
+                ${Object.entries(this.spectrums).map(([key, spec]) => html`
+                    <button class="button button-primary" onclick=${() => this.initialize(key)}>${spec.name}</button>
+                `)}
+                </p>
+
+                <p>The idea of conspiracy spectrums comes from Mick West's 2018
+                book <i>Escaping the Rabbit Hole</i>. A spectrum shows the degree of
+                confidence that a person gives to a range of ideas within a certain topic
+                area. Each spectrum is unique to the individual.</p>
+
+                <p>There are three main reasons why this is useful:</p>
+
+                <p>(1) We should all believe in some conspiracies because
+                conspiracies have certainly occured in our history, and
+                conspiratorial activities like political corruption or media
+                manipulation are certainly occuring in the modern world. And we
+                should all reject some because many conspiracy theories
+                contradict each other, say about who secretly controls the
+                world, meaning they can't all be true. This recognition helps
+                to de-stigmatise the terms 'conspiracy' and 'conspiracy
+                theory'. A conspiracy differs from a conspiracy theory in that
+                it is generally recognised to have occured.</p>
+
+                <p>(2) A very wide range of conspiracy theories are in
+                circulation. These range from the mundane to the extraordinary;
+                from the well-established to, in the vernacular, the positively
+                bonkers. It will complicate your conversations if you assume
+                someone believes in more (or larger) conspiracies than they
+                actually do. They may think you're mocking or misrepresenting
+                them, or that extreme ideas are used to discredit those that
+                are more reasonable.  And it will also complicate your
+                conversations if you think they believe in fewer (or smaller)
+                conspiracies than they actually do.  Bigger conspiracies will
+                override smaller ones. There's no point discussing, say, if
+                COVID has been exploited for commercial gain if a person thinks
+                it was <i>created</i> for thjat purpose.  West suggest that any
+                individual will be able to draw a line between conspiracy
+                theories they find at least plausible and others that they
+                don't. Informative discussions will most likely happen around
+                this line.</p>
+
+                <p>(3) Conspiracy spectrums recognise different degrees of
+                conviction. Someone may merely think a theory is fun, or
+                provocative. Someone else may just be trolling. Gauging their
+                confidence on different issues will avoid misunderstandings and
+                frustration. It will probably lead to better understanding and
+                raise a lot of how and why questions:</p>
+
+                <ul>
+                    <li>Why don't you think this deserves complete confidence?</li>
+                    <li>Why is this one more likely than that one?</li>
+                    <li>Can those two both be equally high in confidence?
+                    (Don't they contradict each other?)</li>
+                    <li>What would make you more or less certain about this?</li>
+                </ul>
+
+                <p> This webpage offers a simple way to identify what a person
+                does and does not believe, and to work out where they draw the
+                diving line between what is plausible and what is not.</p>
+                `}
+
+            ${spectrum && html`
+                <p>
+                    <button class="button button-primary" onclick=${() => this.initialize(null)}>Conspiracy Spectrums</button>
+                    <button class="button button-decorative">${spectrum.name}</button>
+                </p>
+                <p>On a scale from total disbelief to absolute certainty, how confident are you that:</p>
+                <div class="spectrum">
+                ${spectrum.statements.map(([key, statement, confidence]) => {
+                    const rowColor = key == '__' ? '#f7a6c8' : this.colors[confidence];
+                    const rowStyle = spectrum?.format == 'shuffle' ? '' : 'background-color:' + rowColor;
+                    return html`
+                    <div class="spectrum-row">
+                        <div class="spectrum-cell slider-container" style=${rowStyle}>
+                            <input type="range" class="slider" min="0" max="10"
+                                value=${confidence} id=${key}
+                                onchange=${(e) => this.setConfidence(key, e.target.value)}
+                            />
+                        </div>
+                        ${key == '__' ? html`
+                        <div class="spectrum-cell spectrum-divider">${statement}</div>
+                        ` : html`
+                        <div class="spectrum-cell">${statement}</div>
+                        `}
+                    </div>
+                    `}
+                )}
+                </div>
+
+                <p>Use <a target="_blank" href=${this.writeUrl()}>this link</a> to bookmark your answers or refer to them in discussions.</p>
+
+                <p>
+                    <button class="button" onclick=${() => this.shuffleStatements()}>Shuffle</button>
+                    <button class="button" onclick=${() => this.sortByConfidence()}>Sort</button>
+
+                ${spectrum?.format == 'sort' && html`
+                    <button class="button" onclick=${() => this.toggleDivider()}>Divider</button>
+                `}
+                </p>
+                ${spectrum?.format == 'sort' && html`
+                <div class="byline">Overview: ${overview}</div>
+                `}
+
+            `}
+            <div class="byline">Send comments or ideas to @<a href="https://twitter.com/eukras">eukras</a> on Twitter.</div>
+
+            </div>
+            `;
+        }
+    };
+
+    render(html`<${App} />`, document.body);
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.2/chroma.min.js" integrity="sha512-8TVPS0EFkkmtT6yPb5K4csnSt3tjbKRrs0F8gvTNKv2OxOcwDO7+Klkz86gMVrzfqtZos5N2a+k+r9D+hlccmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </body>
+    </html>
