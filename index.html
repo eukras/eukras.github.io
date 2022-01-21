@@ -32,6 +32,18 @@ const shuffle = (unshuffled) => unshuffled
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 
+
+const sortStatements = (unsorted) => unsorted
+    .sort((a, b) => {
+        const [aKey, aStatement, aConfidence] = a;
+        const [bKey, bStatement, bConfidence] = b;
+        if (aConfidence == bConfidence) {
+            return aStatement > bStatement ? 1 : -1;
+        } else {
+            return aConfidence > bConfidence ? 1 : -1;
+        }
+    });
+
 //  .map(i => i == null ? "/" : ".▁▂▃▄▄▅▆▇█!"[i])
 const sparkline = (zerototens) => zerototens
     .filter(i => i == null || (i => i >= 0 && i <= 10))
@@ -55,7 +67,7 @@ class App extends Component {
                 id: 'covid_19',
                 name: 'COVID-19',
                 version: '1.0',
-                description: "the Coronavirus Pandemic",
+                description: "This is a list of COVID-19 beliefs that are at least partly conspiratorial.",
                 statements: [
                     ['hx', "COVID-19 doesn't exist; it's 100% a hoax"],
                     ['fl', "COVID-19 is no more dangerous than influenza"],
@@ -79,23 +91,24 @@ class App extends Component {
                     ['gc', "COVID-19 is a global conspiracy"],
                 ],
             },
-            'united_states': {
-                id: 'united_states',
-                name: 'United States',
+            'us_2018': {
+                id: 'us_2018',
+                name: 'US 2018',
                 version: '1.0',
-                description: "the United States",
+                description: "This top-ten list of mostly-American conspiracy theories appears in Chapter 2 " + 
+                    "of 'Escaping the Rabbit Hole' (Mick West, 2018). An updated list would include news media, " +
+                    "electoral fraud, COVID-19, and QAnon.",
                 statements: [
-                    ['ff', "School shootings can be government 'false flag' operations"],
-                    ['uf', "Aliens have visited Earth but the evidence has been concealed"],
-                    ['gw', "Global warming is a lie propagated by most scientists"],
-                    ['fe', "The world's goverments have covered up the true shape of the earth"],
-                    ['ss', "Influential world leaders are alien shape-shifters"],
-                    ['ch', "Aeroplane trails distribute chemicals that affect people or climate"],
-                    ['ml', "The NASA moon landings were staged in film studios"],
-                    ['wt', "The World Trade Centre attacks were controlled demolitions"],
-                    ['jf', "John F. Kennedy was not shot by Lee Harvey Oswald"],
-                    ['qa', "Political and media elites run widespread paedophilia networks"],
-                    ['mb', "Some national media consistently misrepresents the news"],
+                    ['bp', "pharmaceutical companies conspire to maximise profit by selling drugs that people do not actually need"],
+                    ['gw', "climate change is not caused by man-made carbon emissions, and there's some other motive for claiming this"],
+                    ['jf', "people in addition to Lee Harvey Oswald were involved in the assassination of John F. Kennedy"],
+                    ['wt', "the events of 9/11 were arranged by elements within the US government"],
+                    ['ct', "the trails left behind aircraft are part of a secret spraying program"],
+                    ['ff', "shootings like Sandy Hook and Las Vegas either never happened or were arranged by people in power"],
+                    ['ml', "the moon landings were faked in a movie studio"],
+                    ['uf', "the US government has contact with aliens or crashed alien aircraft and is keeping it secret"],
+                    ['fe', "the earth is flat, but governments, business, and scientists all pretend it is a globe"],
+                    ['ro', "the ruling classes are a race of shape-shifting trans-dimensional reptiles"],
                 ],
             },
         };
@@ -146,6 +159,8 @@ class App extends Component {
         return sparkline(confidences);
     }
 
+    //  Pastel scheme from: 
+    //  https://www.schemecolor.com/beautiful-light-pastels-color-scheme.php
     getColorScale() {
         const pastels = ['#FDDFDF', '#FCF7DE', '#DEFDE0', '#DEF3FD', '#F0DEFD'];
         const scale = chroma.scale(pastels).mode('lrgb').colors(11);
@@ -164,11 +179,11 @@ class App extends Component {
     }
     
     getScore() {
-        const sum = this.state.spectrum.statements.reduce((acc, val) => {
+        const rowsThatCount = this.state.spectrum.statements.filter(val => val[0] != '__');
+        const sum = rowsThatCount.reduce((acc, val) => {
             return acc + val[2];
         }, 0);
-        const len = this.state.spectrum.statements.length;
-        return Math.round(sum * 10 / len);
+        return Math.round(sum * 10 / rowsThatCount.length);
     }
 
     shuffleStatements() {
@@ -185,15 +200,7 @@ class App extends Component {
     }
 
     sortByConfidence() {
-        const sorted = this.state.spectrum.statements.sort((a, b) => {
-            const [aKey, aStatement, aConfidence] = a;
-            const [bKey, bStatement, bConfidence] = b;
-            if (aConfidence == bConfidence) {
-                return aStatement > bStatement ? 1 : -1;
-            } else {
-                return aConfidence > bConfidence ? 1 : -1;
-            }
-        });
+        const sorted = sortStatements(this.state.spectrum.statements);
         this.setState({
             spectrum: {
                 ...this.state.spectrum,
@@ -209,10 +216,13 @@ class App extends Component {
             const [thisKey, thisStatement, thisConfidence] = tuple;
             return [thisKey, thisStatement, thisKey == key ? intConfidence : thisConfidence];
         });
+        const sorted = this.state.spectrum.format == 'shuffle'
+            ? newStatements
+            : sortStatements(newStatements)
         this.setState({
             spectrum: {
                 ...this.state.spectrum,
-                statements: newStatements
+                statements: sorted,
             },
         });
     }
@@ -244,13 +254,15 @@ class App extends Component {
 
     addDivider() {
         const spectrum = this.state.spectrum;
+        const newStatements = [
+            ...spectrum.statements,
+            ['__', '--- D I V I D E R ---', 7]
+        ];
+        const sorted = sortStatements(newStatements);
         this.setState({
             spectrum: {
                 ...spectrum,
-                statements: [
-                    ...spectrum.statements,
-                    ['__', 'D I V I D E R', 5]
-                ],
+                statements: sorted,
             }
         });
     }
@@ -279,8 +291,8 @@ class App extends Component {
             <h1>Conspiracy spectrums</h1>
 
                 <p>When you need to have some clearer conversations about
-                conspiracy theories, try using these <i>conspiracy spectrums</i> to 
-                work out what people are really saying.</p>
+                conspiracy theories, try using these <i>conspiracy
+                spectrums</i> to work out what people are really saying.</p>
 
                 <p style="margin: 2rem;">
                 ${Object.entries(this.spectrums).map(([key, spec]) => html`
@@ -288,60 +300,65 @@ class App extends Component {
                 `)}
                 </p>
 
+                <p>This webpage offers a simple way to identify what a person
+                does and does not believe, and to work out where they draw the
+                diving line between what is plausible and what is not.</p>
+
                 <p>The idea of conspiracy spectrums comes from Mick West's 2018
-                book <i>Escaping the Rabbit Hole</i>. A spectrum shows the degree of
-                confidence that a person gives to a range of ideas within a certain topic
-                area. Each spectrum is unique to the individual.</p>
+                book <i>Escaping the Rabbit Hole</i>. A spectrum shows the
+                degree of confidence that a person gives to each belief in a groups,
+                and is unique to that individual. Big conspiracies have
+                different forms that are more an dles believeable, and these forms 
+                can fall within ranges:</p>
 
-                <p>There are three main reasons why this is useful:</p>
+                <figure>
+                    <img src="images/conspiracy-spectrum-west-2018.png" alt="A conspiracy spectrum from Escaping the Rabbit Hole (ch. 2)." />
+                    <figcaption>A conspiracy spectrum from <i>Escaping the Rabbit Hole</i> (ch. 2).</figcaption>
+                </figure>
 
-                <p>(1) We should all believe in some conspiracies because
-                conspiracies have certainly occured in our history, and
-                conspiratorial activities like political corruption or media
-                manipulation are certainly occuring in the modern world. And we
-                should all reject some because many conspiracy theories
-                contradict each other, say about who secretly controls the
-                world, meaning they can't all be true. This recognition helps
-                to de-stigmatise the terms 'conspiracy' and 'conspiracy
-                theory'. A conspiracy differs from a conspiracy theory in that
-                it is generally recognised to have occured.</p>
+                <p>The beliefs in this spectrum appear in the 'US 2018'
+                conspiracy spectrum on this webpage (see above). Any given
+                individual's beliefs will be points rather than ranges. There
+                are four main reasons why this is useful:</p> 
 
-                <p>(2) A very wide range of conspiracy theories are in
-                circulation. These range from the mundane to the extraordinary;
-                from the well-established to, in the vernacular, the positively
-                bonkers. It will complicate your conversations if you assume
+                <ol>
+
+                <li>We all believe some conspiracies and disbelieve others.
+                This helps to destigmatise the term 'conspiracy theory'. West
+                suggests that any individual will be able to draw a dividing
+                line between sensble theories on the one hand, and silly
+                theories or disinformation on the other hand. Informative
+                discussions will most likely happen around this line.</li>
+
+                <li>Conspiracy spectrums recognise different degrees of
+                conviction. Someone may merely think a theory is fun, or
+                provocative. Someone else may just be trolling. Gauging their
+                confidence on different issues will avoid misunderstandings and
+                frustration.</li>
+
+                <li>It will make your conversations harder if you assume
                 someone believes in more (or larger) conspiracies than they
                 actually do. They may think you're mocking or misrepresenting
                 them, or that extreme ideas are used to discredit those that
                 are more reasonable.  And it will also complicate your
                 conversations if you think they believe in fewer (or smaller)
-                conspiracies than they actually do.  Bigger conspiracies will
+                conspiracies than they actually do. Bigger conspiracies will
                 override smaller ones. There's no point discussing, say, if
                 COVID has been exploited for commercial gain if a person thinks
-                it was <i>created</i> for thjat purpose.  West suggest that any
-                individual will be able to draw a line between conspiracy
-                theories they find at least plausible and others that they
-                don't. Informative discussions will most likely happen around
-                this line.</p>
+                it was <i>created</i> for that purpose.</li>
 
-                <p>(3) Conspiracy spectrums recognise different degrees of
-                conviction. Someone may merely think a theory is fun, or
-                provocative. Someone else may just be trolling. Gauging their
-                confidence on different issues will avoid misunderstandings and
-                frustration. It will probably lead to better understanding and
-                raise a lot of how and why questions:</p>
+                <li>Putting down degrees of confidence on a spectrum may lead to
+                better understanding by prompting how and why questions:</li>
 
-                <ul>
+                <ol>
                     <li>Why don't you think this deserves complete confidence?</li>
                     <li>Why is this one more likely than that one?</li>
                     <li>Can those two both be equally high in confidence?
                     (Don't they contradict each other?)</li>
-                    <li>What would make you more or less certain about this?</li>
-                </ul>
+                    <li>What do you think would confirm or deny this?</li>
+                </ol>
 
-                <p> This webpage offers a simple way to identify what a person
-                does and does not believe, and to work out where they draw the
-                diving line between what is plausible and what is not.</p>
+                </ol>
                 `}
 
             ${spectrum && html`
@@ -349,39 +366,49 @@ class App extends Component {
                     <button class="button button-primary" onclick=${() => this.initialize(null)}>Conspiracy Spectrums</button>
                     <button class="button button-decorative">${spectrum.name}</button>
                 </p>
-                <p>On a scale from total disbelief to absolute certainty, how confident are you that:</p>
+                <p class="question">On a scale from total disbelief to absolute certainty, how confident are you that:</p>
                 <div class="spectrum">
                 ${spectrum.statements.map(([key, statement, confidence]) => {
                     const rowColor = key == '__' ? '#f7a6c8' : this.colors[confidence];
                     const rowStyle = spectrum?.format == 'shuffle' ? '' : 'background-color:' + rowColor;
+                    const rowDivider = key == '__' ? " spectrum-divider" : "";
+                    if (spectrum.format == 'shuffle' && key == '__') {
+                        return null; // Don't show divider
+                    }
                     return html`
                     <div class="spectrum-row">
-                        <div class="spectrum-cell slider-container" style=${rowStyle}>
+                        <div class=${"spectrum-cell slider-container" + rowDivider} style=${rowStyle}>
                             <input type="range" class="slider" min="0" max="10"
                                 value=${confidence} id=${key}
                                 onchange=${(e) => this.setConfidence(key, e.target.value)}
                             />
                         </div>
-                        ${key == '__' ? html`
-                        <div class="spectrum-cell spectrum-divider">${statement}</div>
-                        ` : html`
-                        <div class="spectrum-cell">${statement}</div>
-                        `}
+                        <div class=${"spectrum-cell" + rowDivider}>${statement}</div>
                     </div>
                     `}
                 )}
                 </div>
 
-                <p>Use <a target="_blank" href=${this.writeUrl()}>this link</a> to bookmark your answers or refer to them in discussions.</p>
+                <ul>
+                    <li>Use <a target="_blank" href=${this.writeUrl()}>this link</a> to bookmark your answers or refer to them in discussions.</li>
+                </ul>
 
                 <p>
                     <button class="button" onclick=${() => this.shuffleStatements()}>Shuffle</button>
                     <button class="button" onclick=${() => this.sortByConfidence()}>Sort</button>
 
                 ${spectrum?.format == 'sort' && html`
-                    <button class="button" onclick=${() => this.toggleDivider()}>Divider</button>
+                    <button class="button" onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
                 `}
                 </p>
+
+                <ul>
+                    ${this.hasDivider() && spectrum.format != 'shuffle' && html`
+                    <li>The divider can be moved around to separate silly theories and misinformation (above) from sensible theories (below).</li>
+                    `}
+                    <li>${spectrum.description}</li>
+                </ul>
+
                 ${spectrum?.format == 'sort' && html`
                 <div class="byline">Overview: ${overview}</div>
                 `}
