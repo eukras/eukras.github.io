@@ -45,6 +45,10 @@ li {
 img {
     max-width: 100%;
 }
+figure {
+    width: 75%;
+    margin: 1rem auto;
+}
 figcaption {
     text-align: center;
 }
@@ -105,9 +109,6 @@ button {
   margin: 2px 1rem 2px 0;
 
   cursor: pointer;
-}
-button:hover {
-  color: black;
 }
 button:active {
   background-color: black;

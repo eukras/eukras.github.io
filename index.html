@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="en">
+  <title>Conspiracy Spectrums</title>
   <meta charset="UTF-8">
 
   <!--
@@ -290,72 +291,88 @@ class App extends Component {
 
             <h1>Conspiracy spectrums</h1>
 
-                <p>When you need to have some clearer conversations about
-                conspiracy theories, try using these <i>conspiracy
-                spectrums</i> to work out what people are really saying.</p>
-
                 <p style="margin: 2rem;">
                 ${Object.entries(this.spectrums).map(([key, spec]) => html`
                     <button class="button button-primary" onclick=${() => this.initialize(key)}>${spec.name}</button>
                 `)}
                 </p>
 
-                <p>This webpage offers a simple way to identify what a person
-                does and does not believe, and to work out where they draw the
-                diving line between what is plausible and what is not.</p>
-
                 <p>The idea of conspiracy spectrums comes from Mick West's 2018
                 book <i>Escaping the Rabbit Hole</i>. A spectrum shows the
-                degree of confidence that a person gives to each belief in a groups,
-                and is unique to that individual. Big conspiracies have
-                different forms that are more an dles believeable, and these forms 
-                can fall within ranges:</p>
+                degree of confidence that a person gives to each belief in a
+                group, and is unique to that individual. Spectrums are a useful
+                tool for improving conversations about conspiracy theories.</p>
 
+                <!-- 
                 <figure>
                     <img src="images/conspiracy-spectrum-west-2018.png" alt="A conspiracy spectrum from Escaping the Rabbit Hole (ch. 2)." />
                     <figcaption>A conspiracy spectrum from <i>Escaping the Rabbit Hole</i> (ch. 2).</figcaption>
                 </figure>
 
                 <p>The beliefs in this spectrum appear in the 'US 2018'
-                conspiracy spectrum on this webpage (see above). Any given
-                individual's beliefs will be points rather than ranges. There
-                are four main reasons why this is useful:</p> 
+                conspiracy spectrum on this webpage (see above).</p>
+                -->
 
                 <ol>
 
-                <li>We all believe some conspiracies and disbelieve others.
-                This helps to destigmatise the term 'conspiracy theory'. West
-                suggests that any individual will be able to draw a dividing
-                line between sensble theories on the one hand, and silly
-                theories or disinformation on the other hand. Informative
-                discussions will most likely happen around this line.</li>
+                <li>We all believe in some conspiracies and disbelieve in
+                others. Recognising this take some of the sting out of the
+                term 'conspiracy theory'.</li>
+
+                <blockquote>
+                Conspiracies are very real, of course. The fact that powerful
+                people make secret plans at the expense of the general public
+                should come as no surprise to anyone. Nixon conspired to cover
+                up Watergate. The CIA staged “false flag” operations in 1953 to
+                bring down the Iranian government. Powerful men in the Reagan
+                administration conspired to illegally trade arms with Iran to
+                finance the Nicaraguan Contras. Enron conspired to shut down
+                power stations to raise the price of electricity. Executives
+                from Archer Daniels Midland conspired to fix the price of
+                animal feed. People within the second Bush administration
+                conspired to present sketchy evidence as conclusive proof of
+                WMDs to justify the invasion of Iraq. Politicians tacitly (and
+                sometimes overtly) conspire with wealthy individuals
+                and corporations, helping pass favorable legislation in
+                exchange for campaign contributions, or sometimes just bribes.
+                The prison industry conspires to get those politicians to
+                incarcerate more people simply to maximize their profits. (West
+                2018, <i>Introduction</i>)
+                </blockquote>
 
                 <li>Conspiracy spectrums recognise different degrees of
-                conviction. Someone may merely think a theory is fun, or
-                provocative. Someone else may just be trolling. Gauging their
+                conviction or confidence or seriousness. Gauging a friend's
                 confidence on different issues will avoid misunderstandings and
                 frustration.</li>
+
+                <li>West suggests that any individual will be able to draw a
+                dividing line between what they see as sensible theories on the
+                one hand, and silly theories or disinformation on the other.
+                Informative discussions will most likely happen near this
+                line.</li>
 
                 <li>It will make your conversations harder if you assume
                 someone believes in more (or larger) conspiracies than they
                 actually do. They may think you're mocking or misrepresenting
-                them, or that extreme ideas are used to discredit those that
-                are more reasonable.  And it will also complicate your
-                conversations if you think they believe in fewer (or smaller)
-                conspiracies than they actually do. Bigger conspiracies will
-                override smaller ones. There's no point discussing, say, if
-                COVID has been exploited for commercial gain if a person thinks
-                it was <i>created</i> for that purpose.</li>
+                them, or that such extreme ideas are used to discredit those
+                that are more reasonable.  And it will equally hamper your
+                conversations if you assume that they believe in fewer (or
+                smaller) conspiracies than they actually do, since
+                bigger conspiracies will override smaller ones. There's no
+                point discussing whether COVID has been <i>exploited</i> for
+                commercial gain if a person thinks it was <i>created</i> for
+                that purpose.</li>
 
-                <li>Putting down degrees of confidence on a spectrum may lead to
-                better understanding by prompting how and why questions:</li>
+                <li>Putting degrees of confidence on a spectrum may also lead to
+                better understanding by prompting questions like:</li>
 
                 <ol>
                     <li>Why don't you think this deserves complete confidence?</li>
-                    <li>Why is this one more likely than that one?</li>
+                    <li>Why do you think this is more likely than that?</li>
                     <li>Can those two both be equally high in confidence?
                     (Don't they contradict each other?)</li>
-                    <li>What do you think would confirm or deny this?</li>
+                    <li>What future discoveries would make you more confident
+                    about this? Or less?</li>
                 </ol>
 
                 </ol>
