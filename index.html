@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <title>Conspiracy Spectrums</title>
-  <meta charset="UTF-8">
-
-  <!--
-
-  TODO:
-
-  * Read spectrum, divider and confidence data from URL.
-  * Save all spectrums in a cookie.
-  * 
-
-  Base64: https://developer.mozilla.org/en-US/docs/Glossary/Base64
-  -->
   <head>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;900&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Conspiracy Spectrums</title>
+      <meta charset="UTF-8">
+      <link rel="stylesheet" href="style.css">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;900&display=swap" rel="stylesheet">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
   <script type="module">
 
 import { h, Component, render } from 'https://unpkg.com/preact?module';
 import htm from 'https://unpkg.com/htm?module';
-
-const html = htm.bind(h);
 
 const shuffle = (unshuffled) => unshuffled
     .map((value) => ({ value, sort: Math.random() }))
@@ -301,7 +288,8 @@ class App extends Component {
                 book <i>Escaping the Rabbit Hole</i>. A spectrum shows the
                 degree of confidence that a person gives to each belief in a
                 group, and is unique to that individual. Spectrums are a useful
-                tool for improving conversations about conspiracy theories.</p>
+                tool for improving conversations about conspiracy theories,
+                because:</p>
 
                 <!-- 
                 <figure>
@@ -336,8 +324,8 @@ class App extends Component {
                 and corporations, helping pass favorable legislation in
                 exchange for campaign contributions, or sometimes just bribes.
                 The prison industry conspires to get those politicians to
-                incarcerate more people simply to maximize their profits. (West
-                2018, <i>Introduction</i>)
+                incarcerate more people simply to maximize their profits.
+                <div class="caption">(West 2018, <i>Introduction</i>)</div>
                 </blockquote>
 
                 <li>Conspiracy spectrums recognise different degrees of
@@ -345,26 +333,28 @@ class App extends Component {
                 confidence on different issues will avoid misunderstandings and
                 frustration.</li>
 
+                <li>It will make your conversations harder if you assume
+                someone believes in more (or larger) conspiracies than they
+                actually do. They may think you're mocking or misrepresenting
+                them, lumping them in with the crazies. They may think that
+                extreme ideas are used to discredit the sensible ones.  And it
+                will equally hamper your conversations if you assume that they
+                believe in fewer (or smaller) conspiracies than they actually
+                do, since bigger conspiracies will override smaller ones.
+                There's no point discussing whether COVID has been
+                <i>exploited</i> for commercial gain if a person thinks
+                it was <i>created</i> for that purpose.</li>
+
                 <li>West suggests that any individual will be able to draw a
                 dividing line between what they see as sensible theories on the
                 one hand, and silly theories or disinformation on the other.
                 Informative discussions will most likely happen near this
                 line.</li>
 
-                <li>It will make your conversations harder if you assume
-                someone believes in more (or larger) conspiracies than they
-                actually do. They may think you're mocking or misrepresenting
-                them, or that such extreme ideas are used to discredit those
-                that are more reasonable.  And it will equally hamper your
-                conversations if you assume that they believe in fewer (or
-                smaller) conspiracies than they actually do, since
-                bigger conspiracies will override smaller ones. There's no
-                point discussing whether COVID has been <i>exploited</i> for
-                commercial gain if a person thinks it was <i>created</i> for
-                that purpose.</li>
-
                 <li>Putting degrees of confidence on a spectrum may also lead to
-                better understanding by prompting questions like:</li>
+                better understanding by prompting a range of questions. Note this 
+                works best if you're seeking understanding, not gotchas and
+                zingers.</li>
 
                 <ol>
                     <li>Why don't you think this deserves complete confidence?</li>
@@ -437,6 +427,8 @@ class App extends Component {
             `;
         }
     };
+
+    const html = htm.bind(h);
 
     render(html`<${App} />`, document.body);
 

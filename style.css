@@ -52,6 +52,9 @@ figure {
 figcaption {
     text-align: center;
 }
+div.caption {
+    text-align: right;
+}
 
 div.spectrum {
 }
