@@ -108,9 +108,16 @@ class App extends Component {
     }
 
     checkUrl() {
-        const data = this.readUrl();
-        if ('ID' in data) {
-            this.initialize(data.ID, data);
+        //  index.html?covid_19
+        const search = window.location.search.slice(1);
+        if (search in this.spectrums) {
+            this.initialize(search);
+        } else {
+            //  index.html#SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
+            const data = this.readUrl();
+            if ('ID' in data) {
+                this.initialize(data.ID, data);
+            }
         }
     }
 
@@ -122,7 +129,7 @@ class App extends Component {
             this.setState({spectrum: null});
             return;
         }
-        const useStatements = statements != null ? statements : {};
+        const useStatements = statements != undefined ? statements : {};
         const newStatements = spectrum.statements.map(tuple => {
             const [key, statement] = tuple;
             const newConfidence = key in useStatements 
@@ -222,7 +229,7 @@ class App extends Component {
             return '&' + thisKey + '=' + thisConfidence;
         });
         const data = 'ID=' + spectrum?.id + urlParts.join('');
-        return '?#' + encodeBase64(data);
+        return 'index.html#' + encodeBase64(data);
     }
 
     toggleDivider() {
@@ -280,7 +287,7 @@ class App extends Component {
 
                 <p style="margin: 2rem;">
                 ${Object.entries(this.spectrums).map(([key, spec]) => html`
-                    <button class="button button-primary" onclick=${() => this.initialize(key)}>${spec.name}</button>
+                    <a class="button button-primary" href=${'index.html?' + spec.id}>${spec.name}</a>
                 `)}
                 </p>
 
@@ -372,7 +379,7 @@ class App extends Component {
 
             ${spectrum && html`
                 <p>
-                    <button class="button button-primary" onclick=${() => this.initialize(null)}>Conspiracy Spectrums</button>
+                    <a class="button" href="index.html">Conspiracy Spectrums</a>
                     <button class="button button-decorative">${spectrum.name}</button>
                 </p>
                 <p class="question">On a scale from total disbelief to absolute certainty, how confident are you that:</p>
