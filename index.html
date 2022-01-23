@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <title>Conspiracy Spectrums</title>
+      <title>Conspiracy Spectrums - For better conversations about conspiracy theories</title>
       <meta charset="UTF-8">
       <link rel="stylesheet" href="style.css">
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -276,13 +276,15 @@ class App extends Component {
             <div class="page-wrapper">
             ${!spectrum && html`
 
-            <h1>Conspiracy spectrums</h1>
+                <h1>Conspiracy Spectrums</h1>
 
                 <p style="margin: 2rem;">
                 ${Object.entries(this.spectrums).map(([key, spec]) => html`
                     <button class="button button-primary" onclick=${() => this.initialize(key)}>${spec.name}</button>
                 `)}
                 </p>
+
+                <p class="question">For better conversations about conspiracy theories</p>
 
                 <p>The idea of conspiracy spectrums comes from Mick West's 2018
                 book <i>Escaping the Rabbit Hole</i>. A spectrum shows the
