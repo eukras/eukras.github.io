@@ -10,7 +10,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-  <script type="module">
+    <script type="module">
 
 import { h, Component, render } from 'https://unpkg.com/preact?module';
 import htm from 'https://unpkg.com/htm?module';
@@ -150,7 +150,7 @@ class App extends Component {
     //  Pastel scheme from: 
     //  https://www.schemecolor.com/beautiful-light-pastels-color-scheme.php
     getColorScale() {
-        const pastels = ['#FDDFDF', '#FCF7DE', '#DEFDE0', '#DEF3FD', '#F0DEFD'];
+        const pastels = ['#DEFDE0', '#DEF3FD', '#F0DEFD', '#FDDFDF', '#FCF7DE'];
         const scale = chroma.scale(pastels).mode('lrgb').colors(11);
         return scale;
     }
@@ -430,11 +430,11 @@ class App extends Component {
         }
     };
 
-    const html = htm.bind(h);
 
-    render(html`<${App} />`, document.body);
+      const html = htm.bind(h);
+      render(html`<${App} />`, document.body);
 
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.2/chroma.min.js" integrity="sha512-8TVPS0EFkkmtT6yPb5K4csnSt3tjbKRrs0F8gvTNKv2OxOcwDO7+Klkz86gMVrzfqtZos5N2a+k+r9D+hlccmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    </body>
-    </html>
+  </body>
+</html>
