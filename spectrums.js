@@ -1,0 +1,51 @@
+const spectrums = {
+    'covid_19': {
+        id: 'covid_19',
+        name: 'COVID-19',
+        version: '1.0',
+        description: "This is a list of COVID-19 beliefs that are at least partly conspiratorial.",
+        statements: [
+            ['hx', "COVID-19 doesn't exist; it's 100% a hoax"],
+            ['fl', "COVID-19 is no more dangerous than influenza"],
+            ['dg', "COVID-19 vaccines pose a greater threat than the disease"],
+            ['5g', "COVID-19 symptoms are actually caused by 5G towers"],
+            ['bi', "COVID-19 was created as a bioweapon"],
+            ['rs', "COVID-19 escaped from a medical research program"],
+            ['pw', "COVID-19 emergency powers will never be rescinded"],
+            ['ex', "COVID-19 is less dangerous than we have been told"],
+            ['nt', "COVID-19 vaccines have not been properly tested"],
+            ['cs', "COVID-19 cures are being suppressed for profit"],
+            ['lh', "COVID-19 lockdowns do more harm than good"],
+            ['ud', "COVID-19 is being exploited to make people mistrust democratic institutions"],
+            ['dp', "COVID-19 is being exploited to increase polarisation"],
+            ['cp', "COVID-19 is being exploited to for corporate profit"],
+            ['ty', "COVID-19 is being exploited to create tyranny"],
+            ['nb', "COVID-19 vaccines injections contain nanobots"],
+            ['em', "COVID-19 experts are generally mistaken"],
+            ['cv', "COVID-19 is cover story for something else that's happening"],
+            ['mm', "COVID-19 is being misrepresented by journalists"],
+            ['gc', "COVID-19 is a global conspiracy"],
+        ],
+    },
+    'us_2018': {
+        id: 'us_2018',
+        name: 'US 2018',
+        version: '1.0',
+        description: "This top-ten list of mostly-American conspiracy theories appears in Chapter 2 " + 
+            "of 'Escaping the Rabbit Hole' (Mick West, 2018). An updated list would include news media, " +
+            "electoral fraud, COVID-19, and QAnon.",
+        statements: [
+            ['bp', "pharmaceutical companies conspire to maximise profit by selling drugs that people do not actually need"],
+            ['gw', "climate change is not caused by man-made carbon emissions, and there's some other motive for claiming this"],
+            ['jf', "people in addition to Lee Harvey Oswald were involved in the assassination of John F. Kennedy"],
+            ['wt', "the events of 9/11 were arranged by elements within the US government"],
+            ['ct', "the trails left behind aircraft are part of a secret spraying program"],
+            ['ff', "shootings like Sandy Hook and Las Vegas either never happened or were arranged by people in power"],
+            ['ml', "the moon landings were faked in a movie studio"],
+            ['uf', "the US government has contact with aliens or crashed alien aircraft and is keeping it secret"],
+            ['fe', "the earth is flat, but governments, business, and scientists all pretend it is a globe"],
+            ['ro', "the ruling classes are a race of shape-shifting trans-dimensional reptiles"],
+        ],
+    },
+};
+export default spectrums;
