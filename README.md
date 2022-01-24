@@ -9,3 +9,7 @@ Source: https://eukras.github.io
 
 * Run `php -S localhost:7890` or your preferred web server
 * Browse to https://localhost:7890
+
+## Extending
+
+New quizzes can be added to `spectrums.js`.
