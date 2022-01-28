@@ -1,4 +1,7 @@
-
+/**
+ * @package 
+ * @author Nigel Chapman <nigel@chapman.id.au>
+ */
 import { h, Component, render } from 'https://unpkg.com/preact?module';
 import htm from 'https://unpkg.com/htm?module';
 
@@ -20,6 +23,7 @@ const sortStatements = (unsorted) => unsorted
         }
     });
 
+//  For a genuine Unicode sparkline: 
 //  .map(i => i == null ? "/" : ".▁▂▃▄▄▅▆▇█!"[i])
 const sparkline = (zerototens) => zerototens
     .filter(i => i == null || (i => i >= 0 && i <= 10))
@@ -49,17 +53,17 @@ class App extends Component {
         //  index.html?covid_19
         const search = window.location.search.slice(1);
         if (search in spectrums) {
-            this.initialize(search);
+            this.initialize(search, {}, 'shuffle');
         } else {
             //  index.html#SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
             const data = this.readUrl();
             if ('ID' in data) {
-                this.initialize(data.ID, data);
+                this.initialize(data.ID, data, 'sort');
             }
         }
     }
 
-    initialize(spectrumId, statements) {
+    initialize(spectrumId, statements, format) {
         const spectrum = spectrumId in spectrums
             ? spectrums[spectrumId]
             : null;
@@ -75,10 +79,13 @@ class App extends Component {
                : 5;
             return [key, statement, newConfidence];
         });
+        const newFormat = format != undefined ? format : 'shuffle';
         const newSpectrum = {
             ...spectrum,
-            statements: shuffle(newStatements),
-            format: 'shuffle',
+            statements: newFormat == 'shuffle'
+                ? shuffle(newStatements)
+                : sortStatements(newStatements),
+            format: newFormat,
         };
         this.setState({spectrum: newSpectrum});
     }
@@ -92,9 +99,10 @@ class App extends Component {
         return sparkline(confidences);
     }
 
-    //  Pastel scheme from: 
-    //  https://www.schemecolor.com/beautiful-light-pastels-color-scheme.php
     getColorScale() {
+        //  Pastel scheme from: 
+        //  https://www.schemecolor.com/beautiful-light-pastels-color-scheme.php
+        //  Scale generated with Chroma:
         //  const pastels = ['#DEFDE0', '#DEF3FD', '#F0DEFD', '#FDDFDF', '#FCF7DE'];
         //  const scale = chroma.scale(pastels).mode('lrgb').colors(11);
         //  return scale;
@@ -126,7 +134,7 @@ class App extends Component {
         return Math.round(sum * 10 / rowsThatCount.length);
     }
 
-    shuffleStatements() {
+    setShuffleFormat() {
         const spectrum = this.state.spectrum;
         if (this.spectrum !== null) {
             this.setState({
@@ -139,7 +147,7 @@ class App extends Component {
         }
     }
 
-    sortByConfidence() {
+    setSortFormat() {
         const sorted = sortStatements(this.state.spectrum.statements);
         this.setState({
             spectrum: {
@@ -221,9 +229,6 @@ class App extends Component {
 
     render() {
         const spectrum = this.state.spectrum;
-        const overview = spectrum
-            ? (this.getSparkline() + ' ' + this.getScore() + '% v.' + spectrum.version)
-            : '';
         return html`
             <div class="page-wrapper">
             ${!spectrum && html`
@@ -351,12 +356,14 @@ class App extends Component {
                 </ul>
 
                 <p>
-                    <button class="button" onclick=${() => this.shuffleStatements()}>Shuffle</button>
-                    <button class="button" onclick=${() => this.sortByConfidence()}>Sort</button>
+                    <button class="button" onclick=${() => this.setShuffleFormat()}>Shuffle</button>
+                    <button class="button" onclick=${() => this.setSortFormat()}>Sort</button>
 
-                ${spectrum?.format == 'sort' && html`
-                    <button class="button" onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
-                `}
+                    ${spectrum?.format == 'sort' && html`
+                        <button class="button" onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
+                        <button disabled="true" class="button-decorative">${this.getScore() + '%'}</button>
+                    `}
+
                 </p>
 
                 <ul>
@@ -366,11 +373,8 @@ class App extends Component {
                     <li>${spectrum.description}</li>
                 </ul>
 
-                ${spectrum?.format == 'sort' && html`
-                <div class="byline">Overview: ${overview}</div>
-                `}
-
             `}
+
             <div class="byline">Send comments or ideas to @<a href="https://twitter.com/eukras">eukras</a> on Twitter.</div>
 
             </div>
