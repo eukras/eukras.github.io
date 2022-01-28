@@ -12,6 +12,7 @@ const spectrums = {
             ['cc', "COVID-19 is only dangerous in cold seasons or climates"],
             ['ch', "COVID-19 cannot affect true Christians"],
             ['ci', "COVID-19 is part of a CIA program to weaken Chinese influence"],
+            ['gr', "COVID-19 conspiracies are part of larger global conspiracies such as a 'New World Order' or 'Great Reset'"],
             ['cp', "COVID-19 is being exploited to maximise corporate profit"],
             ['cs', "COVID-19 is a cover for human organ trafficking networks"],
             ['cm', "COVID-19 vaccines have been monopolised by wealthy nations to the detriment of poor nations"],
