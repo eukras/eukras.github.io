@@ -45,6 +45,7 @@ class App extends Component {
         this.state = {
             spectrum: null,
             format: 'shuffle',
+            locked: false,
         };
         this.checkUrl();
     }
@@ -80,12 +81,14 @@ class App extends Component {
             return [key, statement, newConfidence];
         });
         const newFormat = format != undefined ? format : 'shuffle';
+        const newLocked = newFormat == 'sort' ? true : false;
         const newSpectrum = {
             ...spectrum,
             statements: newFormat == 'shuffle'
                 ? shuffle(newStatements)
                 : sortStatements(newStatements),
             format: newFormat,
+            locked: newLocked,
         };
         this.setState({spectrum: newSpectrum});
     }
@@ -182,7 +185,7 @@ class App extends Component {
             return '&' + thisKey + '=' + thisConfidence;
         });
         const data = 'ID=' + spectrum?.id + urlParts.join('');
-        return 'index.html#' + encodeBase64(data);
+        return '/index.html#' + encodeBase64(data);
     }
 
     toggleDivider() {
@@ -237,7 +240,7 @@ class App extends Component {
 
                 <p style="margin: 2rem;">
                 ${Object.entries(spectrums).map(([key, spec]) => html`
-                    <a class="button button-primary" href=${'index.html?' + spec.id}>${spec.name}</a>
+                    <a class="button button-primary" href=${'/index.html?' + spec.id}>${spec.name}</a>
                 `)}
                 </p>
 
@@ -325,9 +328,14 @@ class App extends Component {
 
             ${spectrum && html`
                 <p>
-                    <a class="button" href="index.html">Conspiracy Spectrums</a>
+                    <a class="button" href="/index.html">Conspiracy Spectrums</a>
                     <button class="button button-decorative">${spectrum.name}</button>
                 </p>
+                ${spectrum.locked && html`
+                <p class="notice">
+                    <b>This is a link to another person's ${spectrum.name} conspiracy spectrum.</b><br/>To enter your own responses, <a href="/index.html?${spectrum.id}" target="_blank">click here</a>.
+                </p>
+                `}
                 <p class="question">On a scale from total disbelief to absolute certainty, how confident are you that:</p>
                 <div class="spectrum">
                 ${spectrum.statements.map(([key, statement, confidence]) => {
@@ -341,6 +349,7 @@ class App extends Component {
                     <div class="spectrum-row">
                         <div class=${"spectrum-cell slider-container" + rowDivider} style=${rowStyle}>
                             <input type="range" class="slider" min="0" max="10"
+                                disabled=${spectrum.locked}
                                 value=${confidence} id=${key}
                                 onchange=${(e) => this.setConfidence(key, e.target.value)}
                             />
@@ -356,11 +365,11 @@ class App extends Component {
                 </ul>
 
                 <p>
-                    <button class="button" onclick=${() => this.setShuffleFormat()}>Shuffle</button>
-                    <button class="button" onclick=${() => this.setSortFormat()}>Sort</button>
+                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()}>Shuffle</button>
+                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setSortFormat()}>Sort</button>
 
                     ${spectrum?.format == 'sort' && html`
-                        <button class="button" onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
+                        <button class="button" disabled=${spectrum.locked} onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
                         <button disabled="true" class="button-decorative">${this.getScore() + '%'}</button>
                     `}
 
