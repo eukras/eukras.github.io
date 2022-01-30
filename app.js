@@ -258,7 +258,7 @@ class App extends Component {
                     <figcaption>A conspiracy spectrum from <i>Escaping the Rabbit Hole</i> (ch. 2).</figcaption>
                 </figure>
 
-                <p>The beliefs in this spectrum appear in the 'US 2018'
+                <p>The beliefs in this spectrum appear in the 'US 2010s'
                 conspiracy spectrum on this webpage (see above).</p>
                 -->
 

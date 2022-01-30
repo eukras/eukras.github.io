@@ -63,9 +63,9 @@ const spectrums = {
             ['zh', "COVID-19 was created by the Chinese government"],
         ],
     },
-    'us_2018': {
-        id: 'us_2018',
-        name: 'US 2018',
+    'us_2010s': {
+        id: 'us_2010s',
+        name: 'US 2010s',
         version: '1.0',
         description: "This top-ten list of mostly-American conspiracy theories appears in Chapter 2 " + 
             "of 'Escaping the Rabbit Hole' (Mick West, 2018). An updated list would include news media, " +
