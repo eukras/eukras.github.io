@@ -56,7 +56,7 @@ class App extends Component {
         if (search in spectrums) {
             this.initialize(search, {}, 'shuffle');
         } else {
-            //  index.html#SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
+            //  index.html?SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
             const data = this.readUrl();
             if ('ID' in data) {
                 this.initialize(data.ID, data, 'sort');
@@ -119,7 +119,7 @@ class App extends Component {
     }
 
     readUrl() {
-        const hash = window.location.hash.slice(1);
+        const hash = window.location.search.slice(1);
         const uri = decodeBase64(hash);
         const pairs = uri.split('&').reduce((acc, pair) => {
             const [key, val] = pair.split('=');
@@ -185,7 +185,7 @@ class App extends Component {
             return '&' + thisKey + '=' + thisConfidence;
         });
         const data = 'ID=' + spectrum?.id + urlParts.join('');
-        return '/index.html#' + encodeBase64(data);
+        return '/index.html?' + encodeBase64(data);
     }
 
     toggleDivider() {
@@ -361,6 +361,9 @@ class App extends Component {
                 </div>
 
                 <ul>
+                    ${this.hasDivider() && spectrum.format != 'shuffle' && html`
+                    <li>The divider can be moved around to separate silly theories and misinformation (above) from sensible theories (below).</li>
+                    `}
                     <li>Use <a target="_blank" href=${this.writeUrl()}>this link</a> to bookmark your answers or share them with others.</li>
                 </ul>
 
@@ -375,13 +378,7 @@ class App extends Component {
 
                 </p>
 
-                <ul>
-                    ${this.hasDivider() && spectrum.format != 'shuffle' && html`
-                    <li>The divider can be moved around to separate silly theories and misinformation (above) from sensible theories (below).</li>
-                    `}
-                    <li>${spectrum.description}</li>
-                </ul>
-
+                <p><i>About this spectrum.</i> ${spectrum.description}</p>
             `}
 
             <div class="byline">Send comments or ideas to @<a href="https://twitter.com/eukras">eukras</a> on Twitter.</div>
