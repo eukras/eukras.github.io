@@ -56,7 +56,7 @@ class App extends Component {
         if (search in spectrums) {
             this.initialize(search, {}, 'shuffle');
         } else {
-            //  index.html?SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
+            //  index.html#SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
             const data = this.readUrl();
             if ('ID' in data) {
                 this.initialize(data.ID, data, 'sort');
@@ -119,7 +119,7 @@ class App extends Component {
     }
 
     readUrl() {
-        const hash = window.location.search.slice(1);
+        const hash = window.location.hash.slice(1);
         const uri = decodeBase64(hash);
         const pairs = uri.split('&').reduce((acc, pair) => {
             const [key, val] = pair.split('=');
@@ -185,7 +185,7 @@ class App extends Component {
             return '&' + thisKey + '=' + thisConfidence;
         });
         const data = 'ID=' + spectrum?.id + urlParts.join('');
-        return '/index.html?' + encodeBase64(data);
+        return '/index.html#' + encodeBase64(data);
     }
 
     toggleDivider() {
