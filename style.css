@@ -69,6 +69,8 @@ div.spectrum-row {
     align-items: stretch;
 }
 div.spectrum-cell {
+    display: flex;
+    align-items: center;
     padding: 0.5rem 2%;
     margin: 2px;
 }
