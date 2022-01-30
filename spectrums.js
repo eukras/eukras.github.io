@@ -23,7 +23,7 @@ const spectrums = {
             ['fx', "COVID-19 is being exploited to make the public give up their freedoms"],
             ['gr', "COVID-19 conspiracies exist and are part of larger global conspiracies such as a 'New World Order' or 'Great Reset'"],
             ['gi', "COVID-19 vaccine company shareholders include United States politicians"],
-            ['ht', "COVID-19 mRNA vaccines cause a high rate of heart attacks in young people"],
+            ['ht', "COVID-19 mRNA vaccine boosters cause a high rate of heart attacks in young people"],
             ['hx', "COVID-19 doesn't exist; it's 100% a hoax"],
             ['ic', "COVID-19 is an internationalist conspiracy to undermine national sovereignty"],
             ['im', "COVID-19 has been disproportionately spread by immigrant communities"],
