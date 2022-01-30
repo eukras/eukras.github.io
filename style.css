@@ -39,7 +39,7 @@ p.question {
 p.notice {
     background-color: #fffff0;
     padding: 1rem;
-    border: 2px lightgray solid;
+    border: 2px #eaeaea solid;
     border-radius: 0.8rem;
 }
 p.notice b {
