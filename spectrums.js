@@ -52,7 +52,7 @@ const spectrums = {
             ['ts', "COVID-19 policies have not adequately protected personal safety"],
             ['us', "COVID-19 was created by the United States government"],
             ['va', "COVID-19 variants are being gradually released to prolong the pandemic"],
-            ['vt', "COVID-19 can be prevented with vitamins, good health, and our bodies natural defenses"],
+            ['vt', "COVID-19 can be prevented with vitamins, good health, and our bodies' natural defenses"],
             ['wv', "COVID-19 escaped from the Wuham Institute of Virology in China"],
             ['zh', "COVID-19 was created by the Chinese government"],
         ],
