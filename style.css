@@ -140,12 +140,16 @@ a.button:active {
   color: white;
 }
 button:disabled {
+    background-color: lightgray;
     cursor: not-allowed;
 }
 button.button-decorative {
   color: lightblue;
   background-color: white;
   cursor: text;
+}
+button.button-decorative:disabled {
+  color: lightgray;
 }
 
 /**

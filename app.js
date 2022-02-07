@@ -51,9 +51,9 @@ class App extends Component {
     }
 
     checkUrl() {
-        //  index.html?covid_19
         const search = window.location.search.slice(1);
         if (search in spectrums) {
+            //  index.html?covid_19
             this.initialize(search, {}, 'shuffle');
         } else {
             //  index.html#SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
@@ -73,11 +73,14 @@ class App extends Component {
             return;
         }
         const useStatements = statements != undefined ? statements : {};
-        const newStatements = spectrum.statements.map(tuple => {
+        const baseStatements = format == 'shuffle'
+            ? spectrum.statements
+            : [...spectrum.statements, ['__', '- - - DIVIDER - - -']];
+        const newStatements = baseStatements.map(tuple => {
             const [key, statement] = tuple;
-            const newConfidence = key in useStatements 
-                ? statements[key]
-               : 5;
+            const newConfidence = key in useStatements
+                ? useStatements[key]
+                : 5;
             return [key, statement, newConfidence];
         });
         const newFormat = format != undefined ? format : 'shuffle';
@@ -207,7 +210,7 @@ class App extends Component {
         const spectrum = this.state.spectrum;
         const newStatements = [
             ...spectrum.statements,
-            ['__', '--- D I V I D E R ---', 7]
+            ['__', '--- D I V I D E R ---', 6]
         ];
         const sorted = sortStatements(newStatements);
         this.setState({
