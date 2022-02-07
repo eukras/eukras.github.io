@@ -244,13 +244,12 @@ class App extends Component {
                 `)}
                 </p>
 
-                <p class="question">A way to have better conversations about conspiracy theories</p>
+                <p class="question">For clearer conversations on conspiracy theories</p>
 
                 <p>The idea of conspiracy spectrums comes from Mick West's 2018
                 book <i>Escaping the Rabbit Hole</i>. A spectrum shows the
                 degree of confidence that a person gives to each belief in a
-                group, and is unique to that individual. Spectrums are a useful
-                tool for improving conversations about conspiracy theories:</p>
+                group, and is unique to that individual.</p>
 
                 <!-- 
                 <figure>
@@ -368,8 +367,8 @@ class App extends Component {
                 </ul>
 
                 <p>
-                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()}>Shuffle</button>
-                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setSortFormat()}>Sort</button>
+                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()}>${spectrum.format == 'shuffle' ? '●' : '○'} Shuffle</button>
+                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setSortFormat()}>${spectrum.format != 'shuffle' ? '●' : '○'} Sort</button>
 
                     ${spectrum?.format == 'sort' && html`
                         <button class="button" disabled=${spectrum.locked} onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
