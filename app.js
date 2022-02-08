@@ -331,7 +331,7 @@ class App extends Component {
             ${spectrum && html`
                 <p>
                     <a class="button" href="/index.html">Conspiracy Spectrums</a>
-                    <button class="button button-decorative">${spectrum.name}</button>
+                    <button disabled=${spectrum.locked} class="button button-decorative">${spectrum.name}</button>
                 </p>
                 ${spectrum.locked && html`
                 <p class="notice">
@@ -375,7 +375,7 @@ class App extends Component {
 
                     ${spectrum?.format == 'sort' && html`
                         <button class="button" disabled=${spectrum.locked} onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
-                        <button disabled="true" class="button-decorative">${this.getScore() + '%'}</button>
+                        <button disabled=${spectrum.locked} class="button-decorative">${this.getScore() + '%'}</button>
                     `}
 
                 </p>
