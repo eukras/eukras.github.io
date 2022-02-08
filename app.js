@@ -37,6 +37,11 @@ const decodeBase64 = (str) => {
   return decodeURIComponent(escape(window.atob( str )));
 }
 
+/**
+ * From wikimedia commons:
+ * Ic_radio_button_on_48px.svg
+ * Ic_radio_button_off_48px.svg
+ */
 const getRadioSvg = (enabled) => enabled
     ? html`
       <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
