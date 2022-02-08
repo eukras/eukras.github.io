@@ -134,14 +134,18 @@ a.button {
 
   cursor: pointer;
 }
+button:hover,
+a.button:hover {
+  color: black;
+}
 button:active,
 a.button:active {
   background-color: black;
   color: white;
 }
 button:disabled {
-    background-color: lightgray;
-    cursor: not-allowed;
+  background-color: lightgray;
+  cursor: not-allowed;
 }
 button.button-decorative {
   color: lightblue;
