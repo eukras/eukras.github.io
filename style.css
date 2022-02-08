@@ -141,9 +141,15 @@ a.button {
 
   cursor: pointer;
 }
-button:hover,
-a.button:hover {
-  color: black;
+/* laptops only; fix :hover on touch devices */
+@media (hover: hover) and (pointer: fine) {
+  button:hover,
+  button:hover svg,
+  a.button:hover,
+  a.button:hover svg {
+    color: black;
+    fill: black;
+  }
 }
 button:active,
 a.button:active {
