@@ -117,6 +117,13 @@ a.button {
     color: initial;
 }
 
+button svg,
+a.button svg {
+    fill: white;
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
 button,
 a.button {
   font-family: 'Source Sans Pro', sans-serif;
