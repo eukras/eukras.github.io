@@ -73,9 +73,9 @@ class App extends Component {
             return;
         }
         const useStatements = statements != undefined ? statements : {};
-        const baseStatements = format == 'shuffle'
-            ? spectrum.statements
-            : [...spectrum.statements, ['__', '- - - DIVIDER - - -']];
+        const baseStatements = format != 'shuffle' && '__' in useStatements
+            ? [...spectrum.statements, ['__', '- - - DIVIDER - - -']]
+            : spectrum.statements;
         const newStatements = baseStatements.map(tuple => {
             const [key, statement] = tuple;
             const newConfidence = key in useStatements
