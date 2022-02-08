@@ -1,9 +1,9 @@
 # README
 
-A tiny JS/CSS app that displays conspiracy spectrums to help with conversations
+A tiny JS app that displays conspiracy spectrums to help with conversations
 about conspiracy theories.
 
-Source: https://eukras.github.io
+* Online at: https://eukras.github.io
 
 ## Start up
 
