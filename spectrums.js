@@ -69,7 +69,7 @@ const spectrums = {
             ['cl', "Bill and Hillary Clinton have had former colleagues and associates murdered"],
             ['cv', "COVID-19 deaths were systematically overcounted by doctors during his presidency"],
             ['ds', "A 'Deep State', consisting of unelected military, intelligence and government officials try to secretly manipulate government"],
-            ['fb', "The FBI helped stage the attack on the Capitol building on 6 Jan 2020"],
+            ['fb', "The FBI helped stage the attack on the Capitol building on 6 Jan 2021"],
             ['im', "The death tolls from hurricanes Irma and Maria in Puerto Rico were inflated by democrats to smear President Trump's image"],
             ['je', "Jeffery Epstein did not commit suicide"],
             ['jh', "Joe and Hunter Biden engaged in corrupt activities in Ukraine"],
