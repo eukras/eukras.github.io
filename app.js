@@ -1,5 +1,5 @@
 /**
- * @package 
+ * @package Conspiracy Spectrums
  * @author Nigel Chapman <nigel@chapman.id.au>
  */
 import { h, Component, render } from 'https://unpkg.com/preact?module';
@@ -256,36 +256,28 @@ class App extends Component {
             <div class="page-wrapper">
             ${!spectrum && html`
 
-                <h1>Conspiracy Spectrums</h1>
-
-                <p style="margin: 2rem;">
+                <p style="margin: 2rem; text-align: right;">
                 ${Object.entries(spectrums).map(([key, spec]) => html`
                     <a class="button button-primary" href=${'/index.html?' + spec.id}>${spec.name}</a>
                 `)}
                 </p>
 
-                <p class="question">For clearer conversations on conspiracy theories</p>
+                <h1>Conspiracy Spectrums</h1>
 
-                <p>The idea of conspiracy spectrums comes from Mick West's 2018
-                book <i>Escaping the Rabbit Hole</i>. A spectrum shows the
+                <p class="question">Need some clearer conversations on
+                conspiracy theories?</p>
+
+                <p>The concept of conspiracy spectrums is taken from Mick
+                West's 2018 book <i>Escaping the Rabbit Hole</i>. Conspiracies
+                exist in topical groups, and a conspiracy spectrum shows the
                 degree of confidence that a person gives to each belief in a
-                group, and is unique to that individual.</p>
+                group. This is likely unique to each individual.</p>
 
-                <!-- 
-                <figure>
-                    <img src="images/conspiracy-spectrum-west-2018.png" alt="A conspiracy spectrum from Escaping the Rabbit Hole (ch. 2)." />
-                    <figcaption>A conspiracy spectrum from <i>Escaping the Rabbit Hole</i> (ch. 2).</figcaption>
-                </figure>
+                <ul>
 
-                <p>The beliefs in this spectrum appear in the 'US 2010s'
-                conspiracy spectrum on this webpage (see above).</p>
-                -->
-
-                <ol>
-
-                <li>We all believe in some conspiracies and disbelieve in
-                others. Conspiracy spectrums can make this clear, which takes
-                some of the sting out of the term 'conspiracy theory'.</li>
+                <li>Spectrums help to show that we all believe in some
+                conspiracies and disbelieve in others. This takes some of the
+                sting out of the term 'conspiracy theory'.</li>
 
                 <blockquote>
                 Conspiracies are very real, of course. The fact that powerful
@@ -308,38 +300,38 @@ class App extends Component {
                 <div class="caption">(West 2018, <i>Introduction</i>)</div>
                 </blockquote>
 
-                <li>Conspiracy spectrums recognise different degrees of
-                conviction or confidence or seriousness. This helps avoid
-                misunderstandings over wrong assumptions. It will hamper your
-                conversations if you assume someone believes in more or larger
-                conspiracies than they actually do. They may think you're
-                mocking or misrepresenting them, lumping them in with the
-                crazies, or using more extreme ideas to discredit more sensible
-                ones. And it will equally hamper your conversations if you
-                assume that they believe in fewer or smaller conspiracies than
-                they actually do, since bigger conspiracies will override
-                smaller ones. There's no point discussing whether COVID has
-                been <i>exploited</i> for commercial gain if a person thinks it
-                was <i>created</i> for that purpose.</li>
+                <li>Conspiracy spectrums also make it clear that individuals
+                give conspiracy ideas different degrees of conviction or
+                confidence or seriousness. This helps avoid misunderstandings
+                caused by wrong assumptions. It will hamper our conversations if
+                we assume someone believes in more or larger conspiracies than
+                they actually do. They may think we're mocking or
+                misrepresenting them, lumping them in with the crazies, or
+                using more extreme ideas to discredit more sensible ones. And
+                it will equally hamper our conversations if we assume that
+                they believe in fewer or smaller conspiracies than they
+                actually do, since bigger conspiracies will override smaller
+                ones. For example, there's no point discussing whether COVID
+                has been <i>exploited</i> for commercial gain if a person
+                thinks it was <i>created</i> for that purpose. West suggests
+                that any individual will be able to draw a dividing line
+                between what they see as sensible theories on the one hand, and
+                silly theories or disinformation on the other.  Informative
+                discussions will most likely happen near this line.</li>
 
-                <li>West suggests that any individual will be able to draw a
-                dividing line between what they see as sensible theories on the
-                one hand, and silly theories or disinformation on the other.
-                Informative discussions will most likely happen near this
-                line.</li>
-
-                <li>Putting degrees of confidence on a spectrum may also lead to
-                better understanding by prompting a range of questions. Note this 
-                works best if you're seeking understanding, not gotchas and
-                zingers.</li>
+                <li>Conspiracy theories also prompt a range of useful
+                questions. Though note these questions work best if you're
+                seeking genuine understanding, not gotchas and zingers.</li>
 
                 <ol>
-                    <li>Why don't you think this deserves complete confidence?</li>
-                    <li>Why do you think this is more likely than that?</li>
+                    <li>Why don't you think this one deserves complete confidence?</li>
+                    <li>Why do you think this one is more likely than <i>that one</i>?</li>
                     <li>Can those two both be equally high in confidence?
                     (Don't they contradict each other?)</li>
                     <li>What future discoveries would make you more confident
                     about this? Or less?</li>
+                    <li>You're an 8 on this, but I'm only a 2. How could I get
+                    to being a number 8?</li>
                 </ol>
 
                 </ol>
