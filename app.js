@@ -324,6 +324,17 @@ class App extends Component {
                 </ol>
 
                 </ol>
+
+                <div class="pure-g">
+                    <div class="pure-u-3-24">
+                    </div>
+                    <div class="pure-u-15-24">
+                        <dl>
+                            <dt>Contact</dt>
+                            <dd><a href="https://twitter.com/eukras">@eukras</a> on Twitter</dd>
+                        </dl>
+                    </div>
+                </div>
                 `}
 
             ${spectrum && html`
