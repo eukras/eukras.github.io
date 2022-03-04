@@ -24,6 +24,18 @@ div.page-wrapper {
   -webkit-box-shadow: 0 0 15px 5px #999999;
   box-shadow: 0 0 15px 5px #999999;
 }
+
+div.text-wrapper {
+    padding: 0 3rem 0 3rem;
+}
+
+*.contact {
+    color: darkgrey;
+    text-align: right;
+    margin-top: 5rem;
+    padding-right: 3vw;
+}
+
 h1 {
     color: white;
     font-size: 5rem;
@@ -43,24 +55,17 @@ h1 {
 h3 {
     color: #6cbbd4;
     font-size: 1.7rem;
+    padding-right: 4vw;
 }
 b {
-    color: darkgray;
-}
-dl {
     color: darkgray;
 }
 dt {
     font-weight: bold;
 }
-p.notice {
-    background-color: #fffff0;
-    padding: 1rem;
-    border: 2px #eaeaea solid;
-    border-radius: 0.8rem;
-}
-p.notice b {
-    color: #afaf6f;
+p.help {
+    color: darkgray;
+    padding-right: 4vw;
 }
 li {
     margin-top: 0.5rem;

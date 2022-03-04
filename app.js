@@ -67,7 +67,7 @@ const getDivider = (statements) => {
     return 0;
 }
 
-const getScore = (statements) => {
+const getConfidence = (statements) => {
     const rowsThatCount = statements.filter(val => val[0] != '__');
     const sum = rowsThatCount.reduce((acc, val) => {
         return acc + val[2];
@@ -75,6 +75,28 @@ const getScore = (statements) => {
     return Math.round(sum * 10 / rowsThatCount.length);
 }
 
+const getSensible = (statements) => {
+    const divider = getDivider(statements);
+    const numSensible = statements
+        .filter(statement => statement[0] != '__')
+        .map(statement => statement[2])
+        .filter(confidence => confidence >= divider)
+        .length;
+    const numStatements = statements
+        .filter(val => val[0] != '__')
+        .length;
+    console.log(divider, numSensible, numStatements);
+    return Math.round(numSensible * 100 / numStatements);
+}
+
+const getSummary = (statements) => {
+    return getConfidence(statements) + '% total confidence, ' +
+        getSensible(statements) + '% rated sensible';
+}
+
+/**
+ * UNUSED
+ */
 const getSparkline = (statements) => {
 
     //  For a genuine Unicode sparkline: 
@@ -246,13 +268,15 @@ class App extends Component {
             <div class="page-wrapper">
             ${!spectrum && html`
 
-                <p style="margin: 2rem; text-align: right;">
+                <p style="margin: 2rem; text-align: center;">
                 ${Object.entries(spectrums).map(([key, spec]) => html`
                     <a class="button button-primary" href=${'/index.html?' + spec.id}>${spec.name}</a>
                 `)}
                 </p>
 
                 <h1>Conspiracy Spectrums</h1>
+
+                <div class="text-wrapper">
 
                 <h3>Need some clearer conversations on conspiracy theories?</h3>
 
@@ -325,16 +349,13 @@ class App extends Component {
 
                 </ol>
 
-                <div class="pure-g">
-                    <div class="pure-u-3-24">
-                    </div>
-                    <div class="pure-u-15-24">
-                        <dl>
-                            <dt>Contact</dt>
-                            <dd><a href="https://twitter.com/eukras">@eukras</a> on Twitter</dd>
-                        </dl>
-                    </div>
                 </div>
+
+                <p class="contact">
+                    Comments and ideas to <a
+                    href="https://twitter.com/eukras">@eukras</a> on
+                    Twitter
+                </p>
                 `}
 
             ${spectrum && html`
@@ -370,6 +391,12 @@ class App extends Component {
                         <h3>
                             This is a shareable link to another person's ${spectrum.name} conspiracy spectrum
                         </h3>
+                        <p class="help">
+                            They were asked to say how confident they were in
+                            the following statements, and at what point the
+                            statements stopped being silly and started
+                            to be sensible.
+                        </p>
                         `}
                     </div>
                 </div>
@@ -411,6 +438,12 @@ class App extends Component {
                         </p>
                         `}
                         ${spectrum.locked && html`
+                        <p class="help">
+                            You can use this site to create your own conspiracy 
+                            spectrums on several topics. The idea is that we'll 
+                            have better conversations if our friends don't have 
+                            to guess or assume what we think. 
+                        </p>
                         <p><a href=${'/index.html?' + spectrum.id} class="button button-primary">Create and share your own answers</a></p>
                         <p><a href=${'/index.html'} class="button button-secondary">See other spectrums</a></p>
                         `}
@@ -422,19 +455,20 @@ class App extends Component {
                     </div>
                     <div class="pure-u-15-24">
                         ${spectrum.locked && html`
-                        <p><input
-                            type="text" readonly=${true}
-                            value=${getScore(spectrum.statements) + '%' + ' +' + getSparkline(spectrum.statements)}
-                            /></p>
+                        <p><input type="text" size=40 readonly=${true} value=${getSummary(spectrum.statements)} /></p>
                         `}
-                        <dl>
-                            <dt>About this spectrum</dt>
-                            <dd>${spectrum.description}</dd>
-                            <dt>Contact</dt>
-                            <dd><a href="https://twitter.com/eukras">@eukras</a> on Twitter</dd>
-                        </dl>
                     </div>
                 </div>
+
+                <div class="pure-g">
+                    <div class="pure-u-7-24">
+                    </div>
+                    <div class="pure-u-17-24">
+                        <p class="help">${spectrum.description}</p>
+                    </div>
+                </div>
+
+                <p class="contact">Comments and ideas: <a href="https://twitter.com/eukras">@eukras</a> on Twitter</p>
             `}
 
             </div>
