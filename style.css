@@ -40,9 +40,18 @@ h1 {
     opacity: 1;
     font-style: normal;
 }
-p.question {
+h3 {
     color: #6cbbd4;
     font-size: 1.7rem;
+}
+b {
+    color: darkgray;
+}
+dl {
+    color: darkgray;
+}
+dt {
+    font-weight: bold;
 }
 p.notice {
     background-color: #fffff0;
@@ -105,10 +114,10 @@ div.spectrum-row:nth-child(even) div.spectrum-cell:first-child + div.spectrum-ce
 }
 
 .spectrum-divider {
-    background-image: linear-gradient(135deg, #f5f5f5 25%, #ffffff 25%, #ffffff 50%, #f5f5f5 50%, #f5f5f5 75%, #ffffff 75%, #ffffff 100%);
+    background-image: linear-gradient(135deg, #f5f5f5 25%, #ffffff 25%, #ffffff
+        50%, #f5f5f5 50%, #f5f5f5 75%, #ffffff 75%, #ffffff 100%);
     background-size: 56.57px 56.57px;
     background-attachment: fixed;
-    color: transparent;
 }
 
 /**
@@ -116,6 +125,12 @@ div.spectrum-row:nth-child(even) div.spectrum-cell:first-child + div.spectrum-ce
  * Buttons
  * -------
  */
+
+a {
+    color: lightblue;
+    font-weight: bold;
+    text-decoration: none;
+}
 
 a.button {
     -webkit-appearance: button;
@@ -168,6 +183,20 @@ button:disabled {
   background-color: lightgray;
   cursor: not-allowed;
 }
+a.button-secondary,
+button.button-secondary {
+  color: white;
+  background-color: lightgrey;
+}
+a.button-secondary:hover,
+button.button-secondary:hover {
+  color: black;
+}
+a.button-secondary:active,
+button.button-secondary:active {
+  color: white;
+  background-color: black;
+}
 button.button-decorative {
   color: lightblue;
   background-color: white;
@@ -187,6 +216,11 @@ div.slider-container {
   width: 100%; /* Width of the outside container */
 }
 
+input[type=text] {
+  color: lightblue;
+  padding: .4rem;
+  border: .1rem solid lightblue;
+}
 input[type=range] {
   -webkit-appearance: none;
   background-color: transparent;

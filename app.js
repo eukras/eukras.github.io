@@ -1,11 +1,25 @@
 /**
+ * Simple conspiracy spectrum tool.
+ *
+ * PAGE 1: Select spectrum from spectrum.js.
+ * PAGE 2: Order and share conspiracy spectrum (3 steps).
+ *
+ * - STEP 1: Shuffle table. Select confidence in each row. Push button.
+ * - STEP 2: Show sorted results. Move divider to show where sensibility begins.
+ * - STEP 3: Shareable link.
+ *
  * @package Conspiracy Spectrums
  * @author Nigel Chapman <nigel@chapman.id.au>
  */
+
 import { h, Component, render } from 'https://unpkg.com/preact?module';
 import htm from 'https://unpkg.com/htm?module';
 
 import spectrums from './spectrums.js'
+
+/**
+ * Global utilities
+ */
 
 const shuffle = (unshuffled) => unshuffled
     .map((value) => ({ value, sort: Math.random() }))
@@ -23,41 +37,74 @@ const sortStatements = (unsorted) => unsorted
         }
     });
 
-//  For a genuine Unicode sparkline: 
-//  .map(i => i == null ? "/" : ".▁▂▃▄▄▅▆▇█!"[i])
-const sparkline = (zerototens) => zerototens
-    .filter(i => i == null || (i => i >= 0 && i <= 10))
-    .map(i => i == null ? "/" : "0123456789X"[i])
-    .join('');
-
 const encodeBase64 = (str) => {
     return window.btoa(unescape(encodeURIComponent(str)));
 }
 const decodeBase64 = (str) => {
-  return decodeURIComponent(escape(window.atob( str )));
+    return decodeURIComponent(escape(window.atob( str )));
 }
 
-/**
- * From wikimedia commons:
- * Ic_radio_button_on_48px.svg
- * Ic_radio_button_off_48px.svg
- */
-const getRadioSvg = (enabled) => enabled
-    ? html`
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-          <path d="M24 14c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0-10C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm0 36c-8.84 0-16-7.16-16-16S15.16 8 24 8s16 7.16 16 16-7.16 16-16 16z"/>
-          <path d="M0 0h48v48H0z" fill="none"/>
-      </svg>`
-    : html`
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-          <path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm0 36c-8.84 0-16-7.16-16-16S15.16 8 24 8s16 7.16 16 16-7.16 16-16 16z"/>
-          <path d="M0 0h48v48H0z" fill="none"/>
-      </svg>`;
+const addDivider = (statements) => {
+    const newStatements = [
+        ...statements,
+        ['__', '▲ Silly  ▼ Sensible', 6]
+    ];
+    return sortStatements(newStatements);
+}
+
+const removeDivider = (statements) => {
+    return statements.filter(statement => {
+        return statement[0] != '__';
+    })
+}
+
+const getDivider = (statements) => {
+    for (let i=0; i < statements.length; i++) {
+        if (statements[i][0] == '__') {
+            return statements[i][2];
+        }
+    }
+    return 0;
+}
+
+const getScore = (statements) => {
+    const rowsThatCount = statements.filter(val => val[0] != '__');
+    const sum = rowsThatCount.reduce((acc, val) => {
+        return acc + val[2];
+    }, 0);
+    return Math.round(sum * 10 / rowsThatCount.length);
+}
+
+const getSparkline = (statements) => {
+
+    //  For a genuine Unicode sparkline: 
+    //  .map(i => i == null ? "/" : ".▁▂▃▄▄▅▆▇█!"[i])
+    const formatSparkline = (numbers) => numbers
+        .filter(i => i => i >= 0 && i <= 10)
+        .map(i => "0123456789X"[i])
+        .join('');
+
+    //  Return null for divider, confidence integer for other rows
+    const divider = getDivider(statements);
+    const confidences = statements
+        .filter(statement => statement[0] != '__')
+        .map(statement => statement[2])
+        .filter(confidence => confidence >= divider)
+
+    console.log(divider)
+    console.log(confidences)
+
+    return formatSparkline(confidences, divider);
+}
+
 
 class App extends Component {
 
     constructor() {
         super();
+
+        this.DIVIDER_TEXT = 
+
         this.colors = this.getColorScale();
         this.state = {
             spectrum: null,
@@ -91,7 +138,7 @@ class App extends Component {
         }
         const useStatements = statements != undefined ? statements : {};
         const baseStatements = format != 'shuffle' && '__' in useStatements
-            ? [...spectrum.statements, ['__', '- - - DIVIDER - - -']]
+            ? [...spectrum.statements, ['__', '▲ Silly  ▼ Sensible', 6]]
             : spectrum.statements;
         const newStatements = baseStatements.map(tuple => {
             const [key, statement] = tuple;
@@ -111,15 +158,6 @@ class App extends Component {
             locked: newLocked,
         };
         this.setState({spectrum: newSpectrum});
-    }
-
-    getSparkline() {
-        //  Return null for divider, confidence integer for other rows
-        const confidences = this.state.spectrum.statements.map(tuple => {
-            const [key, statement, confidence] = tuple;
-            return key == '__' ? null : confidence;
-        });
-        return sparkline(confidences);
     }
 
     getColorScale() {
@@ -148,35 +186,29 @@ class App extends Component {
         }, {});
         return pairs;
     }
-    
-    getScore() {
-        const rowsThatCount = this.state.spectrum.statements.filter(val => val[0] != '__');
-        const sum = rowsThatCount.reduce((acc, val) => {
-            return acc + val[2];
-        }, 0);
-        return Math.round(sum * 10 / rowsThatCount.length);
-    }
 
     setShuffleFormat() {
         const spectrum = this.state.spectrum;
+        const shuffled = shuffle(removeDivider(spectrum.statements));
         if (this.spectrum !== null) {
             this.setState({
                 spectrum: {
                     ...spectrum,
                     format: 'shuffle',
-                    statements: shuffle(spectrum.statements),
+                    statements: shuffled,
                 },
             });
         }
     }
 
     setSortFormat() {
-        const sorted = sortStatements(this.state.spectrum.statements);
+        window.scroll(0,0);  // <-- back to top
+        const sorted = sortStatements(addDivider(this.state.spectrum.statements))
         this.setState({
             spectrum: {
                 ...this.state.spectrum,
-                statements: sorted,
                 format: 'sort',
+                statements: sorted,
             }
         });
     }
@@ -208,48 +240,6 @@ class App extends Component {
         return '/index.html#' + encodeBase64(data);
     }
 
-    toggleDivider() {
-        if (this.hasDivider()) {
-            this.removeDivider();
-        } else {
-            this.addDivider();
-        }
-    }
-
-    hasDivider() {
-        const spectrum = this.state.spectrum;
-        return spectrum.statements.reduce((acc, val) => {
-            return val[0] == '__' || acc;
-        }, false);
-    }
-
-    addDivider() {
-        const spectrum = this.state.spectrum;
-        const newStatements = [
-            ...spectrum.statements,
-            ['__', '--- D I V I D E R ---', 6]
-        ];
-        const sorted = sortStatements(newStatements);
-        this.setState({
-            spectrum: {
-                ...spectrum,
-                statements: sorted,
-            }
-        });
-    }
-
-    removeDivider() {
-        const spectrum = this.state.spectrum;
-        this.setState({
-            spectrum: {
-                ...spectrum,
-                statements: spectrum.statements.filter(statement => {
-                    return statement[0] != '__';
-                }),
-            }
-        });
-    }
-
     render() {
         const spectrum = this.state.spectrum;
         return html`
@@ -264,8 +254,7 @@ class App extends Component {
 
                 <h1>Conspiracy Spectrums</h1>
 
-                <p class="question">Need some clearer conversations on
-                conspiracy theories?</p>
+                <h3>Need some clearer conversations on conspiracy theories?</h3>
 
                 <p>The concept of conspiracy spectrums is taken from Mick
                 West's 2018 book <i>Escaping the Rabbit Hole</i>. Conspiracies
@@ -342,12 +331,37 @@ class App extends Component {
                     <a class="button" href="/index.html">Conspiracy Spectrums</a>
                     <button disabled=${spectrum.locked} class="button button-decorative">${spectrum.name}</button>
                 </p>
-                ${spectrum.locked && html`
-                <p class="notice">
-                    <b>This is a link to another person's ${spectrum.name} conspiracy spectrum.</b><br/>To enter your own responses, <a href="/index.html?${spectrum.id}" target="_blank">click here</a>.
-                </p>
-                `}
-                <p class="question">On a scale from total disbelief to absolute certainty, how confident are you that:</p>
+                <div class="pure-g">
+                    <div class="pure-u-7-24" style="align: right;">
+                        <h3>
+                        ${!spectrum.locked && spectrum.format == "shuffle" && html`
+                        <button disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()} class="button button-secondary">Shuffle</button>
+                        `}
+                        ${!spectrum.locked && spectrum.format == "sort" && html`
+                        <button disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()} class="button button-secondary">◄  Back</button>
+                        `}
+                        </h3>
+                    </div>
+                    <div class="pure-u-17-24">
+                        ${!spectrum.locked && spectrum.format == "shuffle" && html`
+                        <h3>
+                            <b>Step 1 of 3</b><br/>
+                            How confident are you that...
+                        </h3>
+                        `}
+                        ${!spectrum.locked && spectrum.format == "sort" && html`
+                        <h3>
+                            <b>Step 2 of 3</b><br/>
+                            Where does the dividing line between silly and sensible appear?
+                        </h3>
+                        `}
+                        ${spectrum.locked && html`
+                        <h3>
+                            This is a shareable link to another person's ${spectrum.name} conspiracy spectrum
+                        </h3>
+                        `}
+                    </div>
+                </div>
                 <div class="spectrum">
                 ${spectrum.statements.map(([key, statement, confidence]) => {
                     const rowColor = key == '__' ? '#f7a6c8' : this.colors[confidence];
@@ -371,28 +385,46 @@ class App extends Component {
                 )}
                 </div>
 
-                <ul>
-                    ${this.hasDivider() && spectrum.format != 'shuffle' && html`
-                    <li>The divider can be moved around to separate silly theories and misinformation (above) from sensible theories (below).</li>
-                    `}
-                    <li>Use <a target="_blank" href=${this.writeUrl()}>this link</a> to bookmark your answers or share them with others.</li>
-                </ul>
+                <div class="pure-g">
+                    <div class="pure-u-7-24" style="align: right;">
+                    </div>
+                    <div class="pure-u-17-24">
+                        ${!spectrum.locked && spectrum.format == "shuffle" && html`
+                        <p>
+                            <button class="button" onclick=${() => this.setSortFormat()}>Continue ►</button>
+                        </p>
+                        `}
+                        ${!spectrum.locked && spectrum.format == "sort" && html`
+                        <p>
+                            <a class="button button-primary" href=${this.writeUrl()} target="_blank">Share your answers ►</button>
+                        </p>
+                        `}
+                        ${spectrum.locked && html`
+                        <p><a href=${'/index.html?' + spectrum.id} class="button button-primary">Create and share your own answers</a></p>
+                        <p><a href=${'/index.html'} class="button button-secondary">See other spectrums</a></p>
+                        `}
+                    </div>
+                </div>
 
-                <p>
-                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()}>${getRadioSvg(spectrum.format == 'shuffle')} Shuffle</button>
-                    <button class="button" disabled=${spectrum.locked} onclick=${() => this.setSortFormat()}>${getRadioSvg(spectrum.format != 'shuffle')} Sort</button>
-
-                    ${spectrum?.format == 'sort' && html`
-                        <button class="button" disabled=${spectrum.locked} onclick=${() => this.toggleDivider()}>${this.hasDivider() ? "Remove Divider" : "Add Divider"}</button>
-                        <button disabled=${spectrum.locked} class="button-decorative">${this.getScore() + '%'}</button>
-                    `}
-
-                </p>
-
-                <p><i>About this spectrum.</i> ${spectrum.description}</p>
+                <div class="pure-g">
+                    <div class="pure-u-3-24">
+                    </div>
+                    <div class="pure-u-15-24">
+                        ${spectrum.locked && html`
+                        <p><input
+                            type="text" readonly=${true}
+                            value=${getScore(spectrum.statements) + '%' + ' +' + getSparkline(spectrum.statements)}
+                            /></p>
+                        `}
+                        <dl>
+                            <dt>About this spectrum</dt>
+                            <dd>${spectrum.description}</dd>
+                            <dt>Contact</dt>
+                            <dd><a href="https://twitter.com/eukras">@eukras</a> on Twitter</dd>
+                        </dl>
+                    </div>
+                </div>
             `}
-
-            <div class="byline">Send comments or ideas to @<a href="https://twitter.com/eukras">eukras</a> on Twitter.</div>
 
             </div>
         `;
