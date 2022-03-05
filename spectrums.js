@@ -80,7 +80,7 @@ const spectrums = {
             ['sp', "The Obama adminstration placed a spy inside Trump's 2016 presidential campaign"],
             ['tc', "Ted Cruz committed fraud and stole the Iowa caucuses of 2016, in which he defeated Trump"],
             ['tt', "Trump Tower was surveilled by US or UK government agencies during the 2016 presidential campaign"],
-            ['uk', "Ukraine, rather than Russia, attempted to interfere in the 2016 presidential election"],
+            ['uk', "Ukraine attempted to interfere in the 2016 presidential election"],
         ],
     },
     'us_2010s': {
