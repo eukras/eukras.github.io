@@ -47,7 +47,7 @@ const decodeBase64 = (str) => {
 const addDivider = (statements) => {
     const newStatements = [
         ...statements,
-        ['__', '▲ Silly  ▼ Sensible', 6]
+        ['__', '▲ Silly  ▼ Sensible', 5]
     ];
     return sortStatements(newStatements);
 }
@@ -68,7 +68,7 @@ const getDivider = (statements) => {
 }
 
 const getConfidence = (statements) => {
-    const rowsThatCount = statements.filter(val => val[0] != '__');
+    const rowsThatCount = removeDivider(statements);
     const sum = rowsThatCount.reduce((acc, val) => {
         return acc + val[2];
     }, 0);
@@ -153,7 +153,7 @@ class App extends Component {
         }
         const useStatements = statements != undefined ? statements : {};
         const baseStatements = format != 'shuffle' && '__' in useStatements
-            ? [...spectrum.statements, ['__', '▲ Silly  ▼ Sensible', 6]]
+            ? [...spectrum.statements, ['__', '▲ Silly  ▼ Sensible', 5]]
             : spectrum.statements;
         const newStatements = baseStatements.map(tuple => {
             const [key, statement] = tuple;
@@ -377,7 +377,7 @@ class App extends Component {
                         ${!spectrum.locked && spectrum.format == "sort" && html`
                         <h3>
                             <b>Step 2 of 3</b><br/>
-                            Where would you draw a line between silly and sensible statements?
+                            Where would you draw the line between silly and sensible statements?
                         </h3>
                         `}
                         ${spectrum.locked && html`
@@ -385,26 +385,27 @@ class App extends Component {
                             This is a shareable link to another person's ${spectrum.name} conspiracy spectrum
                         </h3>
                         <p class="help">
-                            They were asked to say how confident they were in the following statements, and to draw a line between the silly and the sensible ones. They assigned ${getConfidence(spectrum.statements)}% total confidence, and thought ${getSensible(spectrum.statements)}% were sensible.
+                            They were asked to say how confident they were about the following statements, and to draw a line between the silly and the sensible ones. They gave these ${getConfidence(spectrum.statements)}% total confidence, and thought ${getSensible(spectrum.statements)}% were sensible.
                         </p>
                         `}
                     </div>
                 </div>
                 <div class="spectrum">
                     <div class="spectrum-row">
-                        <div class="spectrum-cell spectrum-head pure-g">
+                        <div class="spectrum-cell pure-g">
                             <div class="pure-u-1-3"><small>0%</small></div>
                             <div class="pure-u-2-3 text-right"><small>100%</small></div>
                         </div>
-                        <div class="spectrum-cell spectrum-head text-right">
-                        ${!spectrum.locked && spectrum.format == "shuffle" && html`
+                        <div class="spectrum-cell pure-g">
                             <div class="pure-u-1-3"><small></small></div>
                             <div class="pure-u-2-3 text-right">
                                 <small>
-                                    <a href="#" onclick=${() => this.setShuffleFormat()}>Shuffle?</a>
+                                    ${removeDivider(spectrum.statements).length} rows
+                                    ${!spectrum.locked && spectrum.format == "shuffle" && html`
+                                    : <a href="#" onclick=${() => this.setShuffleFormat()}>Shuffle</a>
+                                    `}
                                 </small>
                             </div>
-                        `}
                         </div>
                     </div>
                 ${spectrum.statements.map(([key, statement, confidence]) => {
