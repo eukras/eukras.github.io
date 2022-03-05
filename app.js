@@ -349,7 +349,7 @@ class App extends Component {
                     href="https://twitter.com/eukras">@eukras</a> on
                     Twitter
                 </p>
-                `}
+            `}
 
             ${spectrum && html`
                 <p>
@@ -359,9 +359,6 @@ class App extends Component {
                 <div class="pure-g">
                     <div class="pure-u-7-24" style="align: right;">
                         <h3>
-                        ${!spectrum.locked && spectrum.format == "shuffle" && html`
-                        <button disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()} class="button button-secondary">Shuffle</button>
-                        `}
                         ${!spectrum.locked && spectrum.format == "sort" && html`
                         <button disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()} class="button button-secondary">◄  Back</button>
                         `}
@@ -387,16 +384,29 @@ class App extends Component {
                         <h3>
                             This is a shareable link to another person's ${spectrum.name} conspiracy spectrum
                         </h3>
-
                         <p class="help">
-                            They were asked to say how confident they were in
-                            the following statements, and to draw a line
-                            between the silly and the sensible ones. 
+                            They were asked to say how confident they were in the following statements, and to draw a line between the silly and the sensible ones. They assigned ${getConfidence(spectrum.statements)}% total confidence, and thought ${getSensible(spectrum.statements)}% were sensible.
                         </p>
                         `}
                     </div>
                 </div>
                 <div class="spectrum">
+                    <div class="spectrum-row">
+                        <div class="spectrum-cell spectrum-head pure-g">
+                            <div class="pure-u-1-3"><small>0%</small></div>
+                            <div class="pure-u-2-3 text-right"><small>100%</small></div>
+                        </div>
+                        <div class="spectrum-cell spectrum-head text-right">
+                        ${!spectrum.locked && spectrum.format == "shuffle" && html`
+                            <div class="pure-u-1-3"><small></small></div>
+                            <div class="pure-u-2-3 text-right">
+                                <small>
+                                    <a href="#" onclick=${() => this.setShuffleFormat()}>Shuffle?</a>
+                                </small>
+                            </div>
+                        `}
+                        </div>
+                    </div>
                 ${spectrum.statements.map(([key, statement, confidence]) => {
                     const rowColor = key == '__' ? '#f7a6c8' : this.colors[confidence];
                     const rowStyle = spectrum?.format == 'shuffle' ? '' : 'background-color:' + rowColor;
@@ -424,21 +434,20 @@ class App extends Component {
                     </div>
                     <div class="pure-u-17-24">
                         ${!spectrum.locked && spectrum.format == "shuffle" && html`
-                        <p>
+                        <p class="space-above">
                             <button class="button" onclick=${() => this.setSortFormat()}>Continue ►</button>
                         </p>
                         `}
                         ${!spectrum.locked && spectrum.format == "sort" && html`
-                        <p>
+                        <p class="space-above">
                             <a class="button button-primary" href=${this.writeUrl()} target="_blank">Share your answers ►</button>
                         </p>
                         `}
                         ${spectrum.locked && html`
-                        <p class="help">${getSummary(spectrum.statements)}</p>
-                        <p><a href=${'/index.html?' + spectrum.id} class="button button-primary">Create and share your own answers</a></p>
-                        <p class="help">
-                            Using a <a href="https://twitter.com/hashtag/ConspiracySpectrum">#ConspiracySpectrum</a> means that our friends won't need to guess or assume what we think about particular conspiracy theories, so we'll have better conversations about them. 
+                        <p class="help space-above">
+                            <b>Why share?</b><br/>One reason why it's hard to talk about conspiracy theories is that we often rely on assumptions about what each other believe. <a href="https://twitter.com/hashtag/ConspiracySpectrum">#ConspiracySpectrums</a> save us guessing, and can lead to better conversations if we're all willing to share. 
                         </p>
+                        <p class="space-above"><a href=${'/index.html?' + spectrum.id} class="button button-primary">Share your own answers</a></p>
                         <p><a href=${'/index.html'} class="button button-secondary">See other spectrums</a></p>
                         `}
                     </div>
@@ -448,7 +457,7 @@ class App extends Component {
                     <div class="pure-u-7-24">
                     </div>
                     <div class="pure-u-17-24">
-                        <p class="help">${spectrum.description}</p>
+                        <p class="help"><b>About this spectrum</b><br/>${spectrum.description}</p>
                     </div>
                 </div>
 

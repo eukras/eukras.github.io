@@ -52,6 +52,15 @@ h1 {
     opacity: 1;
     font-style: normal;
 }
+.space-above {
+    padding-top: 1rem;
+}
+.text-right {
+    text-align: right;
+}
+small {
+    color: darkgray;
+}
 h3 {
     color: #6cbbd4;
     font-size: 1.7rem;
@@ -116,6 +125,11 @@ div.spectrum-row:nth-child(even) div.spectrum-cell:first-child {
 div.spectrum-row:nth-child(even) div.spectrum-cell:first-child + div.spectrum-cell {
     background-color: #EAEAEA;
     width: 75%;
+}
+
+div.spectrum-row:first-child div.spectrum-cell:first-child {
+    background-color: white;
+    width: 25%;
 }
 
 .spectrum-divider {
