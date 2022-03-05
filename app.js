@@ -400,10 +400,9 @@ class App extends Component {
                             <div class="pure-u-1-3"><small></small></div>
                             <div class="pure-u-2-3 text-right">
                                 <small>
-                                    ${removeDivider(spectrum.statements).length} rows
                                     ${!spectrum.locked && spectrum.format == "shuffle" && html`
-                                    : <a href="#" onclick=${() => this.setShuffleFormat()}>Shuffle</a>
-                                    `}
+                                    <a href="#" onclick=${() => this.setShuffleFormat()}>Shuffle</a>
+                                    `} (${removeDivider(spectrum.statements).length})
                                 </small>
                             </div>
                         </div>
