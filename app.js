@@ -309,27 +309,35 @@ class App extends Component {
                 <li>Conspiracy spectrums also make it clear that individuals
                 give conspiracy ideas different degrees of conviction or
                 confidence or seriousness. This helps avoid misunderstandings
-                caused by wrong assumptions. It will hamper our conversations if
-                we assume someone believes in more or larger conspiracies than
-                they actually do. They may think we're mocking or
-                misrepresenting them, lumping them in with the crazies, or
-                using more extreme ideas to discredit more sensible ones. And
-                it will equally hamper our conversations if we assume that
-                they believe in fewer or smaller conspiracies than they
-                actually do, since bigger conspiracies will override smaller
-                ones. For example, there's no point discussing whether COVID
-                has been <i>exploited</i> for commercial gain if a person
-                thinks it was <i>created</i> for that purpose. West suggests
-                that any individual will be able to draw a dividing line
-                between what they see as sensible theories on the one hand, and
-                silly theories or disinformation on the other.  Informative
-                discussions will most likely happen near this line.</li>
+                    caused by wrong assumptions.</li>
+
+                    <ul>
+                        <li>It will hamper our conversations if we assume
+                        someone believes in more or larger conspiracies than
+                        they actually do. They may think we're mocking or
+                    misrepresenting them, lumping them in with the crazies, or
+                    using more extreme ideas to discredit more sensible
+                        ones.</li>
+                        <li>And it will equally hamper our conversations if we
+                        assume that they believe in fewer or smaller
+                    conspiracies than they actually do, since bigger
+                    conspiracies will override smaller ones. For example,
+                        there's no point discussing whether COVID has been
+                        <i>exploited</i> for commercial gain if a person thinks
+                        it was <i>created</i> for that purpose.</li>
+                    </ul>
+
+                <li>West suggests that any individual will be able to draw a
+                    dividing line between what they see as sensible theories on
+                    the one hand, and silly theories or disinformation on the
+                    other.  Informative discussions will most likely happen
+                    near this line.</li> 
 
                 <li>Conspiracy theories also prompt a range of useful
                 questions. Though note these questions work best if you're
                 seeking genuine understanding, not gotchas and zingers.</li>
 
-                <ol>
+                <ul>
                     <li>Why don't you think this one deserves complete confidence?</li>
                     <li>Why do you think this one is more likely than <i>that one</i>?</li>
                     <li>Can those two both be equally high in confidence?
@@ -338,16 +346,14 @@ class App extends Component {
                     about this? Or less?</li>
                     <li>You're an 8 on this, but I'm only a 2. How could I get
                     to being a number 8?</li>
-                </ol>
+                </ul>
 
                 </ol>
 
                 </div>
 
                 <p class="contact">
-                    Comments and ideas to <a
-                    href="https://twitter.com/eukras">@eukras</a> on
-                    Twitter
+                    Comments and ideas to <a target="_blank" href="https://twitter.com/eukras">@eukras</a> on Twitter
                 </p>
             `}
 
@@ -461,7 +467,9 @@ class App extends Component {
                     </div>
                 </div>
 
-                <p class="contact">Comments and ideas: <a href="https://twitter.com/eukras">@eukras</a> on Twitter</p>
+                <p class="contact">
+                    Comments and ideas to <a target="_blank" href="https://twitter.com/eukras">@eukras</a> on Twitter
+                </p>
             `}
 
             </div>
