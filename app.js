@@ -113,20 +113,13 @@ const getSparkline = (statements) => {
         .map(statement => statement[2])
         .filter(confidence => confidence >= divider)
 
-    console.log(divider)
-    console.log(confidences)
-
     return formatSparkline(confidences, divider);
 }
-
 
 class App extends Component {
 
     constructor() {
         super();
-
-        this.DIVIDER_TEXT = 
-
         this.colors = this.getColorScale();
         this.state = {
             spectrum: null,
@@ -372,6 +365,9 @@ class App extends Component {
                         ${!spectrum.locked && spectrum.format == "sort" && html`
                         <button disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()} class="button button-secondary">◄  Back</button>
                         `}
+                        ${spectrum.locked && html`
+                            <a class="button button-secondary" href=${this.writeUrl()} target="_blank">Link</a>
+                        `}
                         </h3>
                     </div>
                     <div class="pure-u-17-24">
@@ -384,18 +380,18 @@ class App extends Component {
                         ${!spectrum.locked && spectrum.format == "sort" && html`
                         <h3>
                             <b>Step 2 of 3</b><br/>
-                            Where does the dividing line between silly and sensible appear?
+                            Where would you draw a line between silly and sensible statements?
                         </h3>
                         `}
                         ${spectrum.locked && html`
                         <h3>
                             This is a shareable link to another person's ${spectrum.name} conspiracy spectrum
                         </h3>
+
                         <p class="help">
                             They were asked to say how confident they were in
-                            the following statements, and at what point the
-                            statements stopped being silly and started
-                            to be sensible.
+                            the following statements, and to draw a line
+                            between the silly and the sensible ones. 
                         </p>
                         `}
                     </div>
@@ -438,24 +434,12 @@ class App extends Component {
                         </p>
                         `}
                         ${spectrum.locked && html`
-                        <p class="help">
-                            You can use this site to create your own conspiracy 
-                            spectrums on several topics. The idea is that we'll 
-                            have better conversations if our friends don't have 
-                            to guess or assume what we think. 
-                        </p>
+                        <p class="help">${getSummary(spectrum.statements)}</p>
                         <p><a href=${'/index.html?' + spectrum.id} class="button button-primary">Create and share your own answers</a></p>
+                        <p class="help">
+                            Using a <a href="https://twitter.com/hashtag/ConspiracySpectrum">#ConspiracySpectrum</a> means that our friends won't need to guess or assume what we think about particular conspiracy theories, so we'll have better conversations about them. 
+                        </p>
                         <p><a href=${'/index.html'} class="button button-secondary">See other spectrums</a></p>
-                        `}
-                    </div>
-                </div>
-
-                <div class="pure-g">
-                    <div class="pure-u-3-24">
-                    </div>
-                    <div class="pure-u-15-24">
-                        ${spectrum.locked && html`
-                        <p><input type="text" size=40 readonly=${true} value=${getSummary(spectrum.statements)} /></p>
                         `}
                     </div>
                 </div>
