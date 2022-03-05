@@ -60,7 +60,7 @@ const spectrums = {
         id: 'trump',
         name: 'Trump',
         version: '1.0',
-        description: "Based on the Wikipedia page, 'List of conspiracy theories promoted by Donald Trump'. Limited to claims that Trump has explicitly endorsed.",
+        description: "Based on the Wikipedia page, 'List of conspiracy theories promoted by Donald Trump', as of February 2022. Limited to claims that Trump has explicitly endorsed.",
         statements: [
             ['16', "Millions of illegal immigrants voted in the 2016 presidential election, costing Trump the popular vote"],
             ['20', "There was widespread electoral fraud in the 2020 presidential election; it was 'stolen' from Trump, who legitimately won"],
