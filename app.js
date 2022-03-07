@@ -75,23 +75,25 @@ const getConfidence = (statements) => {
     return Math.round(sum * 10 / rowsThatCount.length);
 }
 
-const getSensible = (statements) => {
+const getSensibility = (statements) => {
     const divider = getDivider(statements);
     const numSensible = statements
         .filter(statement => statement[0] != '__')
         .map(statement => statement[2])
-        .filter(confidence => confidence >= divider)
+        .filter(confidence => confidence > divider)
         .length;
     const numStatements = statements
         .filter(val => val[0] != '__')
         .length;
-    console.log(divider, numSensible, numStatements);
     return Math.round(numSensible * 100 / numStatements);
 }
 
+/**
+ * UNUSED
+ */
 const getSummary = (statements) => {
     return getConfidence(statements) + '% total confidence, ' +
-        getSensible(statements) + '% rated sensible';
+        getSensibility(statements) + '% rated sensible';
 }
 
 /**
@@ -391,7 +393,7 @@ class App extends Component {
                             This is a shareable link to another person's ${spectrum.name} conspiracy spectrum
                         </h3>
                         <p class="help">
-                            They were asked to say how confident they were about the following statements, and to draw a line between the silly and the sensible ones. They gave these ${getConfidence(spectrum.statements)}% total confidence, and thought ${getSensible(spectrum.statements)}% were sensible.
+                            They were asked to say how confident they were about the following statements, and to draw a line between the silly and the sensible ones. They gave these ${getConfidence(spectrum.statements)}% total confidence, and thought ${getSensibility(spectrum.statements)}% were sensible.
                         </p>
                         `}
                     </div>
