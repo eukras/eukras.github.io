@@ -44,6 +44,26 @@ const decodeBase64 = (str) => {
     return decodeURIComponent(escape(window.atob( str )));
 }
 
+const svgLeftArrow = () => {
+    //  Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
+    //  License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+    return html`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+        <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"/>
+    </svg>
+    `;
+}
+
+const svgRightArrow = () => {
+    //  Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
+    //  License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+    return html`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+        <path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"/>
+    </svg>
+    `;
+}
+
 const addDivider = (statements) => {
     const newStatements = [
         ...statements,
@@ -368,7 +388,7 @@ class App extends Component {
                     <div class="pure-u-7-24" style="align: right;">
                         <h3>
                         ${!spectrum.locked && spectrum.format == "sort" && html`
-                        <button disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()} class="button button-secondary">◄  Back</button>
+                        <button disabled=${spectrum.locked} onclick=${() => this.setShuffleFormat()} class="button button-secondary">${svgLeftArrow()} Back</button>
                         `}
                         ${spectrum.locked && html`
                             <a class="button button-secondary" href=${this.writeUrl()} target="_blank">Link</a>
@@ -443,12 +463,12 @@ class App extends Component {
                     <div class="pure-u-17-24">
                         ${!spectrum.locked && spectrum.format == "shuffle" && html`
                         <p class="space-above">
-                            <button class="button" onclick=${() => this.setSortFormat()}>Continue ►</button>
+                            <button class="button" onclick=${() => this.setSortFormat()}>Continue ${svgRightArrow()}</button>
                         </p>
                         `}
                         ${!spectrum.locked && spectrum.format == "sort" && html`
                         <p class="space-above">
-                            <a class="button button-primary" href=${this.writeUrl()} target="_blank">Share your answers ►</button>
+                            <a class="button button-primary" href=${this.writeUrl()} target="_blank">Share your answers ${svgRightArrow()}</button>
                         </p>
                         `}
                         ${spectrum.locked && html`
