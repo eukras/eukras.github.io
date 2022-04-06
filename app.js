@@ -355,7 +355,7 @@ class App extends Component {
                     other.  Informative discussions will most likely happen
                     near this line.</li> 
 
-                <li>Conspiracy theories also prompt a range of useful
+                <li>Conspiracy spectrums also prompt a range of useful
                 questions. Though note these questions work best if you're
                 seeking genuine understanding, not gotchas and zingers.</li>
 
