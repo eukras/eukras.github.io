@@ -40,10 +40,10 @@ h1 {
     color: white;
     font-size: 5rem;
     line-height: 5rem;
-    margin-bottom: 4rem;
-    text-shadow: 0px 0px 56px lightseagreen;
-    text-align: center;
+    margin: 4rem 2.8rem;
+    text-shadow: 0px 0px 56px #aaa;;
 }
+
 .byline {
     text-align: right;
     padding-top: 2rem;
@@ -145,6 +145,15 @@ div.spectrum-row:first-child div.spectrum-cell:first-child {
  * -------
  */
 
+.button-list {
+    margin: 4rem 1.8rem;
+}
+
+.button-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 a {
     color: #6cbbd4;
     font-weight: bold;
@@ -175,14 +184,17 @@ a.button {
 
   color: white;
   background-color: lightblue;
-  border: none;
+  border: white 2px solid;
 
   border-radius: .7rem;
   padding: 0.5rem 1.0rem;
-  margin: 2px 1rem 2px 0;
+  margin: 0.5rem 1.0rem;
 
   cursor: pointer;
+
+  box-shadow: 3px 3px 7px #e5e5e5;
 }
+
 /* laptops only; fix :hover on touch devices */
 @media (hover: hover) and (pointer: fine) {
   button:hover,
@@ -220,9 +232,11 @@ button.button-decorative {
   color: lightblue;
   background-color: white;
   cursor: text;
+  box-shadow: none;
 }
 button.button-decorative:disabled {
   color: lightgray;
+  box-shadow: none;
 }
 
 /**

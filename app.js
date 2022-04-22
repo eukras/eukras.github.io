@@ -283,17 +283,17 @@ class App extends Component {
             <div class="page-wrapper">
             ${!spectrum && html`
 
-                <p style="margin: 2rem; text-align: center;">
+                <h1>Conspiracy Spectrums</h1>
+
+                <p class="button-list button-wrap">
                 ${Object.entries(spectrums).map(([key, spec]) => html`
-                    <a class="button button-primary" href=${'/index.html?' + spec.id}>${spec.name}</a>
+                    <a class="button button-primary" href=${'/index.html?' + spec.id}>${spec.name} ${spec.statements.length > 30 ? ' (Long)' : ''}</a>
                 `)}
                 </p>
 
-                <h1>Conspiracy Spectrums</h1>
-
                 <div class="text-wrapper">
 
-                <h3>Need some clearer conversations on conspiracy theories?</h3>
+                <h3>Share your confidence</h3>
 
                 <p>The concept of conspiracy spectrums is taken from Mick
                 West's 2018 book <i>Escaping the Rabbit Hole</i>. Conspiracies
@@ -306,27 +306,6 @@ class App extends Component {
                 <li>Spectrums help to show that we all believe in some
                 conspiracies and disbelieve in others. This takes some of the
                 sting out of the term 'conspiracy theory'.</li>
-
-                <blockquote>
-                Conspiracies are very real, of course. The fact that powerful
-                people make secret plans at the expense of the general public
-                should come as no surprise to anyone. Nixon conspired to cover
-                up Watergate. The CIA staged “false flag” operations in 1953 to
-                bring down the Iranian government. Powerful men in the Reagan
-                administration conspired to illegally trade arms with Iran to
-                finance the Nicaraguan Contras. Enron conspired to shut down
-                power stations to raise the price of electricity. Executives
-                from Archer Daniels Midland conspired to fix the price of
-                animal feed. People within the second Bush administration
-                conspired to present sketchy evidence as conclusive proof of
-                WMDs to justify the invasion of Iraq. Politicians tacitly (and
-                sometimes overtly) conspire with wealthy individuals
-                and corporations, helping pass favorable legislation in
-                exchange for campaign contributions, or sometimes just bribes.
-                The prison industry conspires to get those politicians to
-                incarcerate more people simply to maximize their profits.
-                <div class="caption">(West 2018, <i>Introduction</i>)</div>
-                </blockquote>
 
                 <li>Conspiracy spectrums also make it clear that individuals
                 give conspiracy ideas different degrees of conviction or
@@ -380,7 +359,7 @@ class App extends Component {
             `}
 
             ${spectrum && html`
-                <p>
+                <p class="button-wrap">
                     <a class="button" href="/index.html">Conspiracy Spectrums</a>
                     <button disabled=${spectrum.locked} class="button button-decorative">${spectrum.name}</button>
                 </p>
@@ -473,10 +452,12 @@ class App extends Component {
                         `}
                         ${spectrum.locked && html`
                         <p class="help space-above">
-                            <b>Why share?</b><br/>One reason why it's hard to talk about conspiracy theories is that we often rely on assumptions about what each other believe. <a href="https://twitter.com/hashtag/ConspiracySpectrum">#ConspiracySpectrums</a> save us guessing, and can lead to better conversations if we're all willing to share. 
+                            <b>Why share?</b><br/>One reason why it's hard to talk about conspiracy theories is that we often rely on assumptions about what each other believe. <a href="https://twitter.com/hashtag/ConspiracySpectrums">#ConspiracySpectrums</a> save us guessing, and can lead to better conversations if we're all willing to share. 
                         </p>
-                        <p class="space-above"><a href=${'/index.html?' + spectrum.id} class="button button-primary">Share your own answers</a></p>
-                        <p><a href=${'/index.html'} class="button button-secondary">See other spectrums</a></p>
+                        <p class="space-above button-wrap">
+                            <a href=${'/index.html?' + spectrum.id} class="button button-primary">Share your own answers</a>
+                            <a href=${'/index.html'} class="button button-secondary">See other spectrums</a>
+                        </p>
                         `}
                     </div>
                 </div>
