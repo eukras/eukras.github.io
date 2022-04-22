@@ -1,7 +1,7 @@
 const spectrums = {
     'covid_19': {
         id: 'covid_19',
-        name: 'COVID-19',
+        name: 'COVID-19 2022',
         version: '1.0',
         description: "This is just a long list of COVID-19 beliefs that are either conspiratorial in themselves or are linked to claims of conspiratorial cover-ups. They come from no particular sources.",
         statements: [
@@ -58,7 +58,7 @@ const spectrums = {
     },
     'trump': {
         id: 'trump',
-        name: 'Trump',
+        name: 'Trump 2020',
         version: '1.0',
         description: "Based on the Wikipedia page, 'List of conspiracy theories promoted by Donald Trump', as of February 2022. Limited to claims that Trump has explicitly endorsed.",
         statements: [
@@ -83,9 +83,9 @@ const spectrums = {
             ['uk', "Ukraine attempted to interfere in the 2016 presidential election"],
         ],
     },
-    'us_2010s': {
-        id: 'us_2010s',
-        name: 'US 2010s',
+    'us_classics': {
+        id: 'us_classics',
+        name: 'US Classics 2018',
         version: '1.0',
         description: "This top-ten list of mostly-American conspiracy theories appears in Chapter 2 " + 
             "of 'Escaping the Rabbit Hole' (Mick West, 2018). An updated list would include news media, " +
@@ -101,6 +101,24 @@ const spectrums = {
             ['uf', "the US government has contact with aliens or crashed alien aircraft and is keeping it secret"],
             ['fe', "the earth is flat, but governments, business, and scientists all pretend it is a globe"],
             ['ro', "the ruling classes are a race of shape-shifting trans-dimensional reptiles"],
+        ],
+    },
+    'us_rightwing': {
+        id: 'us_rightwing',
+        name: 'US Right Wing 2015',
+        version: '1.0',
+        description: "Based on the 2015 Salon article “10 Right-Wing Conspiracy Theories That Have Slowly Invaded American Politics” by Mark Potok and Don Terry.",
+        statements: [
+            ['cc', 'the Common Core State Standards in education are political indoctrination'],
+            ['ml', 'The Jade Helm 15 military exercises were a prelude to invoking martial law'],
+            ['21', 'the United Nations’ Agenda 21 program was “a comprehensive plan of utopian environmentalism, social engineering, and global political control” '],
+            ['nu', 'the North American Union will merge Canada, the United States, and Mexico into a single nation'],
+            ['sl', 'Sharia law (i.e. Islamic religious law) is being implemented in American court-rooms'],
+            ['gc', 'the government is planning to seize privately owned firearms'],
+            ['fe', 'the Federal Emergency Management Agency has built hundreds of concentration camps across the United States'],
+            ['ib', 'international bankers, usually Jewish, are manipulating economic events in the United States'],
+            ['mt', 'there are Muslim terrorist training camps scattered across the United States'],
+            ['lg', 'campaigns for LGBT rights are a campaign to control and marginalise Christians'],
         ],
     },
 };
