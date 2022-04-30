@@ -67,7 +67,7 @@ const svgRightArrow = () => {
 const addDivider = (statements) => {
     const newStatements = [
         ...statements,
-        ['__', '▲ Silly  ▼ Sensible', 5]
+        ['__', '▲ Silly  ▼ Sensible  (adjust the slider)', 5]
     ];
     return sortStatements(newStatements);
 }
@@ -175,7 +175,7 @@ class App extends Component {
         }
         const useStatements = statements != undefined ? statements : {};
         const baseStatements = format != 'shuffle' && '__' in useStatements
-            ? [...spectrum.statements, ['__', '▲ Silly  ▼ Sensible', 5]]
+            ? [...spectrum.statements, ['__', '▲ Silly  ▼ Sensible  (adjust the slider)', 5]]
             : spectrum.statements;
         const newStatements = baseStatements.map(tuple => {
             const [key, statement] = tuple;
