@@ -67,7 +67,7 @@ const svgRightArrow = () => {
 const addDivider = (statements) => {
     const newStatements = [
         ...statements,
-        ['__', '▲ Silly  ▼ Sensible  (adjust the slider)', 5]
+        ['__', '▲ Silly  ▼ Sensible', 0]
     ];
     return sortStatements(newStatements);
 }
@@ -175,7 +175,7 @@ class App extends Component {
         }
         const useStatements = statements != undefined ? statements : {};
         const baseStatements = format != 'shuffle' && '__' in useStatements
-            ? [...spectrum.statements, ['__', '▲ Silly  ▼ Sensible  (adjust the slider)', 5]]
+            ? [...spectrum.statements, ['__', '▲ Silly  ▼ Sensible', 0]]
             : spectrum.statements;
         const newStatements = baseStatements.map(tuple => {
             const [key, statement] = tuple;
@@ -398,9 +398,9 @@ class App extends Component {
                 </div>
                 <div class="spectrum">
                     <div class="spectrum-row">
-                        <div class="spectrum-cell pure-g">
-                            <div class="pure-u-1-3"><small>0%</small></div>
-                            <div class="pure-u-2-3 text-right"><small>100%</small></div>
+                        <div class="spectrum-cell flex-between">
+                            <small>0%</small>
+                            <small>100%</small>
                         </div>
                         <div class="spectrum-cell pure-g">
                             <div class="pure-u-1-3"><small></small></div>
@@ -414,6 +414,7 @@ class App extends Component {
                         </div>
                     </div>
                 ${spectrum.statements.map(([key, statement, confidence]) => {
+                    const rowLabel = (key == '__' && !spectrum.locked && spectrum?.format == 'sort') ? '(adjust the slider)' : '';
                     const rowColor = key == '__' ? '#f7a6c8' : this.colors[confidence];
                     const rowStyle = spectrum?.format == 'shuffle' ? '' : 'background-color:' + rowColor;
                     const rowDivider = key == '__' ? " spectrum-divider" : "";
@@ -429,7 +430,10 @@ class App extends Component {
                                 onchange=${(e) => this.setConfidence(key, e.target.value)}
                             />
                         </div>
-                        <div class=${"spectrum-cell" + rowDivider}>${statement}</div>
+                        <div class=${"flex-between spectrum-cell" + rowDivider}>
+                            <span>${statement}</span>
+                            <span style="float: right">${rowLabel}</span>
+                        </div>
                     </div>
                     `}
                 )}
