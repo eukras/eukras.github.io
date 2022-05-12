@@ -296,11 +296,12 @@ class App extends Component {
                 <h3>Share your confidence</h3>
 
                 <p>The concept of conspiracy spectrums is taken from Mick
-                West's 2018 book <i>Escaping the Rabbit Hole</i>. Conspiracies
-                exist in topical groups, and a conspiracy spectrum shows the
-                degree of confidence that a person gives to each belief in a
-                group. This is likely unique to each individual, and may help
-                have clearer conversations about conspiratorial beliefs.</p>
+                West's 2018 book <i>Escaping the Rabbit Hole</i>. Conspiracy
+                theories exist in topical groups, and a conspiracy spectrum
+                shows the degree of confidence that a person gives to each
+                individual belief in that group. The overall pattern may well
+                be unique to that person, and understanding this may lead to
+                clearer conversations about conspiratorial beliefs.</p>
 
                 <ul>
 
