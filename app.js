@@ -318,12 +318,12 @@ class App extends Component {
                         <li>We shouldn't assume someone believes in more or
                             larger conspiracies than they actually do. They may
                             think we're mocking or misrepresenting them,
-                            lumping them in with the crazies, or using more
-                            extreme ideas to discredit more sensible ones.</li>
+                            lumping them in with <i>the crazies</i>, or using 
+                            extreme ideas to discredit sensible ones.</li>
                         <li>And we shouldn't assume that they believe in fewer
                             or smaller conspiracies than they actually do.
                             Big conspiracies override smaller ones: there's not
-                            much point discussing whether COVID has been
+                            much point discussing whether COVID has been 
                             <i>exploited</i> for commercial gain if a person
                             thinks it was <i>created</i> for that purpose.</li>
                     </ul>
