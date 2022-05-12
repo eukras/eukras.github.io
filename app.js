@@ -332,19 +332,22 @@ class App extends Component {
                     dividing line between what they see as sensible theories on
                     the one hand, and silly theories or disinformation on the
                     other. Informative discussions will most likely happen
-                    either side of this line, where beliefs are more nuanced.</li> 
+                    either side of this line, where there are already arguments 
+                    either way.</li> 
 
                 <li>Conspiracy spectrums also prompt a range of useful
-                questions. Though note these questions work best if you're
-                seeking genuine understanding, not gotchas and zingers.</li>
+                questions, the most important of which concern the reasons for
+                their various beliefs. Of course, these questions work best if
+                you're seeking genuine understanding, not just trying to
+                score points.</li>
 
                 <ul>
-                    <li>Why don't you think this one deserves complete confidence?</li>
-                    <li>Why do you think this one is more likely than that one?</li>
+                    <li>Why don't you think this statement deserves complete confidence?</li>
+                    <li>Why do you think this statement is more likely than that one?</li>
                     <li>Can those two both be equally high in confidence?
                     (Don't they contradict each other?)</li>
                     <li>What future discoveries would make you more confident
-                    about this? Or less?</li>
+                    about this one? Or less?</li>
                     <li>You're an 8 on this, but I'm only a 2. How could I get
                     to being a number 8?</li>
                 </ul>
