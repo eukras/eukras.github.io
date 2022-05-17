@@ -403,8 +403,11 @@ class App extends Component {
                 <div class="spectrum">
                     <div class="spectrum-row">
                         <div class="spectrum-cell flex-between">
-                            <small>0%</small>
-                            <small>100%</small>
+                            ${['·', 0,1,2,3,4,5,6,7,8,9,10, ''].map((key) => {
+                                return html`
+                                    <small>${ key }</small>
+                                `;
+                            })}
                         </div>
                         <div class="spectrum-cell pure-g">
                             <div class="pure-u-1-3"><small></small></div>
