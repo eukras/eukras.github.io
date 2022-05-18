@@ -48,6 +48,11 @@ h1 {
     display: flex;
     justify-content: space-between;
 }
+.flex-between-g1 {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
 .byline {
     text-align: right;
     padding-top: 2rem;

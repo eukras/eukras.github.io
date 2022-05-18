@@ -277,6 +277,13 @@ class App extends Component {
         return '/index.html#' + encodeBase64(data);
     }
 
+    countRows() {
+        const spectrum = this.state.spectrum;
+        const n = removeDivider(spectrum.statements).length;
+        const s = (n === 1) ? '' : 's';
+        return `${n} row${s}`;
+    }
+
     render() {
         const spectrum = this.state.spectrum;
         return html`
@@ -403,9 +410,9 @@ class App extends Component {
                 <div class="spectrum">
                     <div class="spectrum-row">
                         <div class="spectrum-cell flex-between">
-                            ${['·', 0,1,2,3,4,5,6,7,8,9,10, ''].map((key) => {
+                            ${[' ', '  0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ''].map((key) => {
                                 return html`
-                                    <small>${ key }</small>
+                                    <small>${key}</small>
                                 `;
                             })}
                         </div>
@@ -414,8 +421,8 @@ class App extends Component {
                             <div class="pure-u-2-3 text-right">
                                 <small>
                                     ${!spectrum.locked && spectrum.format == "shuffle" && html`
-                                    <a href="#" onclick=${() => this.setShuffleFormat()}>Shuffle</a>
-                                    `} (${removeDivider(spectrum.statements).length})
+                                        ${this.countRows()} : <a href="#" onclick=${() => this.setShuffleFormat()}>Shuffle</a>
+                                    `}
                                 </small>
                             </div>
                         </div>
@@ -437,9 +444,9 @@ class App extends Component {
                                 onchange=${(e) => this.setConfidence(key, e.target.value)}
                             />
                         </div>
-                        <div class=${"flex-between spectrum-cell" + rowDivider}>
+                        <div class=${"flex-between-g1 spectrum-cell" + rowDivider}>
                             <span>${statement}</span>
-                            <span style="float: right">${rowLabel}</span>
+                            <small>${rowLabel}</small>
                         </div>
                     </div>
                     `}
