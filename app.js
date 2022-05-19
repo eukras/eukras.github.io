@@ -302,13 +302,13 @@ class App extends Component {
 
                 <h3>Share your confidence</h3>
 
-                <p>The concept of conspiracy spectrums is taken from Mick
-                West's 2018 book <i>Escaping the Rabbit Hole</i>. Conspiracy
-                theories exist in topical groups, and a conspiracy spectrum
-                shows the degree of confidence that a person gives to each
-                individual belief in that group. The overall pattern may well
-                be unique to that person, and understanding this may lead to
-                clearer conversations about conspiratorial beliefs.</p>
+                <p>The concept of a conspiracy spectrum comes from Mick West's
+                2018 book <i>Escaping the Rabbit Hole</i>. Conspiracy
+                beliefs exist in topical groups, and a spectrum shows the
+                degree of confidence that a person gives to each individual
+                belief in that group. The overall pattern may well be
+                unique to that person, and understanding this may lead to
+                clearer conversations.</p>
 
                 <ul>
 
@@ -349,7 +349,7 @@ class App extends Component {
                 score points.</li>
 
                 <ul>
-                    <li>Why don't you think this statement deserves complete confidence?</li>
+                    <li>Why don't you think this statement is a 10 (or a zero?)</li>
                     <li>Why do you think this statement is more likely than that one?</li>
                     <li>Can those two both be equally high in confidence?
                     (Don't they contradict each other?)</li>
