@@ -510,6 +510,24 @@
         };
         setInterval(incrementVisibilityTimers, 1000);
 
+        /*
+         * Persist/display/update bookmark for last read.
+         */
+        const saveBookMark = () => {
+            if (bookmark !== '') {
+                document.cookie = 'bookmark=' + bookmark;
+            }
+        };
+
+        const loadBookmark = () => {
+            const parts = document.cookie.split('=');
+            if (parts[1] !== undefined) {
+                bookmark = parts[1];
+            } else {
+                bookmark = '';
+            }
+        }
+
         const updateBookmark = () => {
             let maxTime = 0;
             let maxKey = undefined;
@@ -543,23 +561,6 @@
                 }
             }
         };
-
-        showBookmark();
-
-        const saveBookMark = () => {
-            if (bookmark !== '') {
-                document.cookie = 'bookmark=' + bookmark;
-            }
-        };
-
-        const loadBookmark = () => {
-            const parts = document.cookie.split('=');
-            if (parts[1] !== undefined) {
-                bookmark = parts[1];
-            } else {
-                bookmark = '';
-            }
-        }
 
         loadBookmark();
         showBookmark();
