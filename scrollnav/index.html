@@ -528,18 +528,20 @@
         };
 
         const showBookmark = () => {
-            //  Hide all, show selected            
-            const outline = document.querySelector('div#outline');
-            console.log(outline);
-            const icons = outline.querySelectorAll('i.fa-star');
-            console.log(icons);
-            for (icon of icons) {
-                icon.style.display = 'none';
+            if (bookmark !== '') {
+                //  Hide all, show selected            
+                const outline = document.querySelector('div#outline');
+                const icons = outline.querySelectorAll('i.fa-star');
+                for (icon of icons) {
+                    icon.style.display = 'none';
+                }
+                const navLink = document.querySelector('[href="#' + bookmark + '"]');
+                const div = navLink.closest('div');
+                const mark = div.querySelector('i.fa-star');
+                if (mark !== null) {
+                    mark.style.display = 'inline';
+                }
             }
-            const navLink = document.querySelector('[href="#' + bookmark + '"]');
-            const div = navLink.closest('div');
-            const mark = div.querySelector('.fa-star');
-            mark.style.display = 'inline';
         };
 
         showBookmark();
