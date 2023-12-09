@@ -12,7 +12,7 @@
     <body>
         <nav id="site-navigation">
             <div class="sticky sidebar">
-                <h1>UX Demo</h1>
+                <p><b>UX Demo</b></p>
                 <p><small>Lo-Fi JS prototype</small></p><small>
                 <ul class="small-text">
                     <li>Show an outline that does not distract from reading</li>
@@ -337,7 +337,7 @@
         var waitTimer = undefined;
         var blinkTimer = undefined;
         var visibleSections = {};
-        var bookmark = undefined;
+        var bookmark = '';
 
         window.onscroll = function(e) {
             const scroll = oldScrollY < window.scrollY ? DOWN : UP;
@@ -545,7 +545,7 @@
         showBookmark();
 
         const saveBookMark = () => {
-            if (bookmark !== undefined) {
+            if (bookmark !== '') {
                 document.cookie = 'bookmark=' + bookmark;
             }
         };
@@ -554,6 +554,8 @@
             const parts = document.cookie.split('=');
             if (parts[1] !== undefined) {
                 bookmark = parts[1];
+            } else {
+                bookmark = '';
             }
         }
 
