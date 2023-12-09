@@ -337,7 +337,7 @@
         var waitTimer = undefined;
         var blinkTimer = undefined;
         var visibleSections = {};
-        var bookmark = 's2-2';
+        var bookmark = undefined;
 
         window.onscroll = function(e) {
             const scroll = oldScrollY < window.scrollY ? DOWN : UP;
@@ -545,7 +545,9 @@
         showBookmark();
 
         const saveBookMark = () => {
-            document.cookie = 'bookmark=' + bookmark;
+            if (bookmark != undefined) {
+                document.cookie = 'bookmark=' + bookmark;
+            }
         };
 
         const loadBookmark = () => {
