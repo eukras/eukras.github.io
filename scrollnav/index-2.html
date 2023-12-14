@@ -594,12 +594,12 @@
                 hideScrollDownIndicator();
                 stopBlinkTimer();
                 if (scroll === DOWN) {
-                    startWaitTimer();
                     mode = NAVIGATE_WAIT;
                 } else {
                     hideScrollDownIndicator();
                     showScrollUpIndicator();
                     mode = NAVIGATE;
+                    stopWaitTimer();
                 }
             }
             lastScroll = scroll;
