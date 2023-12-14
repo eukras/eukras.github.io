@@ -1,10 +1,10 @@
-
+<!DOCTYPE html>
 <html>
     <head>
         <title>
             UX DEMO
         </title>
-        <meta charset="ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <script src="https://kit.fontawesome.com/350b6fff02.js" crossorigin="anonymous"></script>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,600;1,400;1,600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
@@ -284,25 +284,28 @@
                     <a href="#"><i class="fa fa-arrow-up margin-right"></i> Top of page</a>
                 </p>
                 <p class="scroll-notice">
-                    <span id="scroll-down-indicator" style="display: none;" class="scroll-key">
-                        Scroll down to hide sidebars...
+                    <span id="scroll-down-indicator" style="display: none;">
+                        <span class="scroll-key"><i class="fa fa-angles-down"></i></span><span class="scroll-key-action">Hide sidebars</span>
+                    </span>
+                    <span id="scroll-up-indicator" style="display: none;">
+                        <span class="scroll-key"><i class="fa fa-angles-up"></i></span><span class="scroll-key-action">Show sidebars</span>
                     </span>
                     &nbsp;
                 </p>
 
                 <div id="outline">
-                    <div class="h1 hanging-indent"><a href="#s1">1.&nbsp; Good Conversations are Possible</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s1-1">1.1.&nbsp; What problems do conspiracy theories commonly cause?</a> <i class="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s1-2">1.2.&nbsp; Where to start and what to ask?</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h1 hanging-indent"><a href="#s2">2.&nbsp; Think about Fringe Mistrust</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s2-1">2.1.&nbsp; Mistrust explains a lot</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s2-2">2.2.&nbsp; Two kinds of conspiracy theories</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h1 hanging-indent"><a href="#s3">3.&nbsp; Think about Mainstream Knowledge</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s3-1">3.1.&nbsp; Rights and toleration</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s3-2">3.2.&nbsp; Objectivity and fallibility</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s3-3">3.3.&nbsp; Persuasion and disproof</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h1 hanging-indent"><a href="#s4">4.&nbsp; Focus on Christian Behaviour</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
-                    <div class="h2 hanging-indent"><a href="#s4-1">4.1.&nbsp; Work on inoculation</a> <i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h1 hanging-indent"><a href="#s1">1.&nbsp; Good Conversations are Possible</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s1-1">1.1.&nbsp; What problems do conspiracy theories commonly cause?</a><i class="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s1-2">1.2.&nbsp; Where to start and what to ask?</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h1 hanging-indent"><a href="#s2">2.&nbsp; Think about Fringe Mistrust</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s2-1">2.1.&nbsp; Mistrust explains a lot</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s2-2">2.2.&nbsp; Two kinds of conspiracy theories</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h1 hanging-indent"><a href="#s3">3.&nbsp; Think about Mainstream Knowledge</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s3-1">3.1.&nbsp; Rights and toleration</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s3-2">3.2.&nbsp; Objectivity and fallibility</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s3-3">3.3.&nbsp; Persuasion and disproof</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h1 hanging-indent"><a href="#s4">4.&nbsp; Focus on Christian Behaviour</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
+                    <div class="h2 hanging-indent"><a href="#s4-1">4.1.&nbsp; Work on inoculation</a><i style="display: none;" class="fa fa-clock superscript"></i></div>
 
                 </div>
                 <p><small><i class="fa fa-clock superscript"></i> <i>Last read</i></small></p><small>
@@ -317,7 +320,7 @@
          * Colors
          */
         :root {
-            font-size: 18pt;
+            font-size: 20pt;
 
             --icon-color: #556b2f;
             --icon-feature: #c3dec0;
@@ -418,8 +421,19 @@
             text-align: center;
             padding: 0.1em .4em;
             color: var(--icon-color);
+            background-color: var(--body-color);
+            border-radius: .4em 0 0 .4em;
+            margin-right: 0;
+            white-space: nowrap;
+        }
+        .scroll-key-action {
+            font-size: smaller;
+            text-align: center;
+            padding: 0.1em .4em;
+            color: var(--icon-color);
             background-color: var(--icon-feature);
-            border-radius: .4em;
+            border-radius: 0 .4em .4em 0;
+            margin-left: 0;
             white-space: nowrap;
         }
         .margin-right {
@@ -555,10 +569,12 @@
             if (mode === READ) {
                 if (scroll === UP && lastScroll === DOWN) {
                     showSidebars();
+                    showScrollUpIndicator();
                     mode = NAVIGATE;
                 }
             } else if (mode === NAVIGATE) {
                 if (scroll === DOWN) {
+                    hideScrollUpIndicator();
                     showScrollDownIndicator();
                     startWaitTimer();
                     mode = NAVIGATE_WAIT;
@@ -570,6 +586,7 @@
                     mode = NAVIGATE_WAIT;
                 } else {
                     hideScrollDownIndicator();
+                    showScrollUpIndicator();
                     mode = NAVIGATE;
                 }
             } else if (mode === NAVIGATE_STOP) {
@@ -581,6 +598,7 @@
                     mode = NAVIGATE_WAIT;
                 } else {
                     hideScrollDownIndicator();
+                    showScrollUpIndicator();
                     mode = NAVIGATE;
                 }
             }
@@ -604,6 +622,11 @@
 
         const showScrollDownIndicator = () => {
             const span = document.getElementById('scroll-down-indicator');
+            span.style.display = 'inline';
+        };
+
+        const showScrollUpIndicator = () => {
+            const span = document.getElementById('scroll-up-indicator');
             span.style.display = 'inline';
         };
 
@@ -634,6 +657,11 @@
         const makeScrollDownIndicatorBlink = () => {
             const span = document.getElementById('scroll-down-indicator');
             span.classList.add('blink');
+        };
+
+        const hideScrollUpIndicator = () => {
+            const span = document.getElementById('scroll-up-indicator');
+            span.style.display = 'none';
         };
 
         const hideScrollDownIndicator = () => {
