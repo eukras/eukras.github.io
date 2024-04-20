@@ -38,7 +38,7 @@ const SPECTRUMS = {
       'nt': "COVID-19 vaccines have not been properly tested",
       'of': "COVID-19 infections have been under-reported by Chinese officials",
       'ov': "COVID-19 hospitalisations and deaths have been over-reported by doctors",
-      'ox': "COVID-19 hospitalisations and deaths are being covered up by doctors, media, and politicians in western nations",
+      'ox': "COVID-19 vaccines cause hospitalisations and deaths that are being covered up by doctors, media, and politicians",
       'pw': "COVID-19 emergency powers are an attempt to permanently take power over citizens",
       'rs': "COVID-19 threats were ignored by US President Trump for political reasons",
       'rx': "COVID-19 threats were exaggerated in order to undermine US President Trump",
