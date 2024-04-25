@@ -44,6 +44,18 @@ const initial = sortRatings(spectrum, ratings.value);
 const display = signal(initial);
 
 
+export function App() {
+  if (!spectrum) {
+    return <SelectSpectrum />
+  } else {
+    if (locked === false) {
+      return <EnterRatings />
+    } else {
+      return <ShareRatings />
+    }
+  }
+}
+
 function setRating(id, confidence) {
   ratings.value = {
     ...ratings.value,
@@ -61,18 +73,7 @@ function toggleChecked(id) {
     ...checked.value,
     [id]: !checked.value[id],
   }
-}
-
-export function App() {
-  if (!spectrum) {
-    return <SelectSpectrum />
-  } else {
-    if (locked === false) {
-      return <EnterRatings />
-    } else {
-      return <ShareRatings />
-    }
-  }
+  display.value = sortRatings(spectrum, ratings.value);
 }
 
 function SelectSpectrum(props) {
@@ -188,7 +189,7 @@ function RatingRows(props) {
               disabled={props.locked} value={confidence}
               onChange={(e) => setRating(id, e.currentTarget.value)}
               onClick={(e) => toggleChecked(id)}
-              onTouchEnd={(e) => toggleChecked(id)}
+              //  onTouchEnd={(e) => toggleChecked(id)}
             />
           </div>
           {id == '__' && <div class="rating-statement text-center text-divider">
