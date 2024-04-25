@@ -21,22 +21,28 @@
  * @author Nigel Chapman <nigel@chapman.id.au>
  */
 import { useAutoAnimate } from '@formkit/auto-animate/preact';
-import { computed, signal } from '@preact/signals';
+import { signal } from '@preact/signals';
 import { render } from 'preact';
 
 import { getConfidence, getSensibility, sortRatings } from './ratings';
 import { SPECTRUMS } from './spectrums';
 import { readUrl, writeUrl } from './uri';
 
+const COLORS = [
+  "#defde0", "#def9ec", "#def5f7", "#e2effd",
+  "#e9e7fd", "#f0defd", "#f5def1", "#fadfe5",
+  "#fde4df", "#fceede", "#fcf7de"
+];
+
 import './style.css';
 
 const [spectrum, ratingsObj, locked] = readUrl(SPECTRUMS);
 
-//  Reactive variables...
 const ratings = signal(ratingsObj);
 const checked = signal({});
+const initial = sortRatings(spectrum, ratings.value);
+const display = signal(initial);
 
-const displayRatings = computed(() => sortRatings(spectrum, ratings.value));
 
 function setRating(id, confidence) {
   ratings.value = {
@@ -47,6 +53,7 @@ function setRating(id, confidence) {
     ...checked.value,
     [id]: true,
   }
+  display.value = sortRatings(spectrum, ratings.value);
 }
 
 function toggleChecked(id) {
@@ -56,14 +63,14 @@ function toggleChecked(id) {
   }
 }
 
-export function App(props) {
+export function App() {
   if (!spectrum) {
     return <SelectSpectrum />
   } else {
     if (locked === false) {
-      return <EnterRatings spectrum={spectrum} ratings={ratings} />
+      return <EnterRatings />
     } else {
-      return <ShareRatings spectrum={spectrum} ratings={ratings} />
+      return <ShareRatings />
     }
   }
 }
@@ -129,8 +136,8 @@ function ShareRatings(props) {
         statements, and to draw a line between the silly and the sensible ones.
         Zero means an absolute impossibility, ten means they'd bet their life on it,
         and five means they have no opinion one way or the other. They gave this
-        list of statements <b>{getConfidence(displayRatings.value)}%</b> total
-        confidence, and thought <b>{getSensibility(displayRatings.value)}%</b> of them
+        list of statements <b>{getConfidence(display.value)}%</b> total
+        confidence, and thought <b>{getSensibility(display.value)}%</b> of them
         were sensible.
       </p>
       <RatingTable locked={true} />
@@ -149,52 +156,51 @@ function ShareRatings(props) {
 }
 
 function RatingTable(props) {
-  const [parent] = useAutoAnimate();
   return <div class="ratings-table">
-    <div class="confidence-row">
-      <div class="confidence-slider number-legend">
-        {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => <small>{key}</small>)}
-      </div>
-      <div class="spectrum-statement text-right"><small>({displayRatings.value.length} rows)</small></div>
+    <RatingHeader count={true} />
+    <RatingRows locked={props.locked} />
+    <RatingHeader count={false} />
+  </div>
+}
+
+function RatingHeader(props) {
+  return <div class="rating-row">
+    <div class="rating-slider number-legend">
+      {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => <small>{key}</small>)}
     </div>
-    <div ref={parent}>
-      {displayRatings.value.map((tuple) => {
-        const [id, statement, confidence] = tuple;
-        return <Rating id={id} key={tuple} statement={statement} confidence={confidence} locked={props.locked} />
-      })}
-    </div>
-    <div class="confidence-row">
-      <div class="confidence-slider number-legend">
-        {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => <small>{key}</small>)}
-      </div>
-      <div class="spectrum-statement"></div>
+    <div class="rating-statement text-right">
+      {props.count && <small>({display.value.length} rows)</small>}
     </div>
   </div>
 }
 
-function Rating(props) {
-  const COLORS = [
-    "#defde0", "#def9ec", "#def5f7", "#e2effd",
-    "#e9e7fd", "#f0defd", "#f5def1", "#fadfe5",
-    "#fde4df", "#fceede", "#fcf7de"
-  ];
-  const classNames = 'slider' + (checked.value[props.id] === true ? ' checked' : '')
-  return <div id={props.id} key={props.tuple} class="confidence-row">
-    <div class="confidence-slider" style={{ 'background-color': COLORS[props.confidence] }}>
-      <input id={'input-' + props.id} class={classNames}
-        type="range" min="0" max="10"
-        disabled={props.locked} value={props.confidence}
-        onChange={(e) => setRating(props.id, e.currentTarget.value)}
-        onClick={(e) => toggleChecked(props.id)}
-      />
+function RatingRows(props) {
+  const [parent] = useAutoAnimate({ duration: 500, });
+  return <>
+    <div ref={parent}>
+      {display.value.map((tuple) => {
+        const [id, statement, confidence] = tuple;
+        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
+        return <div key={id} class="rating-row">
+          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
+            <input id={'input-' + id} class={classNames}
+              type="range" min="0" max="10"
+              disabled={props.locked} value={confidence}
+              onChange={(e) => setRating(id, e.currentTarget.value)}
+              onClick={(e) => toggleChecked(id)}
+              onTouchEnd={(e) => toggleChecked(id)}
+            />
+          </div>
+          {id == '__' && <div class="rating-statement text-center text-divider">
+            <div>SILLY IDEAS</div>
+            <hr class="dashed" />
+            <div>SENSIBLE IDEAS</div>
+          </div>}
+          {id != '__' && <div class="rating-statement">{statement}</div>}
+        </div>
+      })}
     </div>
-    {props.id == '__' && <div class="spectrum-statement text-center">
-      <div>▲ Silly</div>
-      <hr class="dashed" />
-      <div>▼ Sensible</div>
-    </div>}
-    {props.id != '__' && <div class="spectrum-statement">{props.statement}</div>}
-  </div>
+  </>;
 }
 
 

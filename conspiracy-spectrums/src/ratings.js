@@ -33,7 +33,7 @@ const getDivider = (statements) => {
 }
 
 
-const sortRatings = (spectrum, ratings) => {
+const sortRatings = (spectrum, ratings, checked) => {
   if (ratings === null) {
     return [];
   }
