@@ -68,10 +68,10 @@ function setRating(id, confidence) {
   display.value = sortRatings(spectrum, ratings.value);
 }
 
-function toggleChecked(id) {
+function setChecked(id) {
   checked.value = {
     ...checked.value,
-    [id]: !checked.value[id],
+    [id]: true,
   }
   display.value = sortRatings(spectrum, ratings.value);
 }
@@ -115,7 +115,8 @@ function EnterRatings(props) {
           href="https://twitter.com/hashtag/ConspiracySpectrums">#ConspiracySpectrums</a> save
         us guessing, and can lead to better conversations. Use the button
         above to share your conspiracy spectrum with friends and family, or
-        online, and discuss why you think differently at different points.</p>
+        online, and discuss why you think differently at various
+        points. <a href="index.html">More information?</a></p>
 
       <h2>About this spectrum</h2>
       <p>{spectrum['description']}</p>
@@ -170,7 +171,7 @@ function RatingHeader(props) {
       {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => <small>{key}</small>)}
     </div>
     <div class="rating-statement text-right">
-      {props.count && <small>({display.value.length} rows)</small>}
+      {props.count && <small>(done {Object.keys(checked.value).length} of {display.value.length} rows)</small>}
     </div>
   </div>
 }
@@ -188,8 +189,7 @@ function RatingRows(props) {
               type="range" min="0" max="10"
               disabled={props.locked} value={confidence}
               onChange={(e) => setRating(id, e.currentTarget.value)}
-              onClick={(e) => toggleChecked(id)}
-              //  onTouchEnd={(e) => toggleChecked(id)}
+              onClick={(e) => setChecked(id)}
             />
           </div>
           {id == '__' && <div class="rating-statement text-center text-divider">
@@ -210,7 +210,7 @@ function Header(props) {
     <h1>
       <a href="index.html">Conspiracy Spectrums</a>
     </h1>
-    <div class="subtitle">Share your confidence, for better conversations</div>
+    <div class="subtitle">Share your answers, for better conversations</div>
   </header>
 }
 
@@ -256,9 +256,9 @@ function ExplainSpectrums(props) {
         <li>And we shouldn't assume that they believe in fewer
           or smaller conspiracies than they actually do.
           Big conspiracies override smaller ones: there's not
-          much point discussing whether COVID has been
-          <i>exploited</i> for commercial gain if a person
-          thinks it was <i>created</i> for that purpose.</li>
+          much point discussing whether COVID has been <i>exploited</i> for
+          commercial gain if a person thinks it was <i>created</i> for
+          that purpose.</li>
       </ul>
 
       <li>West suggests that any individual will be able to draw a

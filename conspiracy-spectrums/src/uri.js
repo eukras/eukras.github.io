@@ -20,7 +20,7 @@ function readUrl(spectrums) {
     //  Initialise ratings with random values
     const statements = addDivider(spectrums[search].statements);
     const randomRatings = Object.keys(statements).reduce((acc, id) => {
-      acc[id] = Math.floor(Math.random() * 11);  // 0..10
+      acc[id] = Math.floor(Math.random() * 9) + 1;  // 1..9
       return acc;
     }, {});
     randomRatings['__'] = 10;
