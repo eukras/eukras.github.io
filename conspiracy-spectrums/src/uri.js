@@ -11,16 +11,14 @@
  *  - locked (bool) for whether page data can be changed
  */
 
-import { addDivider } from "./ratings";
-
 function readUrl(spectrums) {
   const search = window.location.search.slice(1);
   const hash = window.location.hash.slice(1);
   if (search && search in spectrums) {
     //  Initialise ratings with random values
-    const statements = addDivider(spectrums[search].statements);
+    const statements = spectrums[search].statements;
     const randomRatings = Object.keys(statements).reduce((acc, id) => {
-      acc[id] = Math.floor(Math.random() * 9) + 1;  // 1..9
+      acc[id] = 5; // Math.floor(Math.random() * 9) + 1;  // 1..9
       return acc;
     }, {});
     randomRatings['__'] = 10;

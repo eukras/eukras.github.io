@@ -41,6 +41,8 @@
   :root {
     --fg: #f5f5f5;
     --bg: #303030;
+    color: #a0a0a0;
+    background-color: #050505;
   }
 }
 
@@ -136,6 +138,7 @@ hr.dashed {
 .text-divider {
   font-size: 14pt;
   letter-spacing: 0.25em;
+  padding: 2em;
 }
 
 main {
@@ -148,9 +151,9 @@ main {
 }
 
 .button-list a {
-  background-color: black;
+  background-color: var(--fg);
   background-image: none;
-  color: white;
+  color: var(--bg);
   font-size: 18pt;
   font-weight: bold;
   font-family: sans-serif;
@@ -170,9 +173,18 @@ main {
 	max-width: min(95vw, 1024px);
 }
 
-.number-legend {
+.rating-header {
   display: flex;
-  justify-content: space-evenly;
+  align-items: center;
+  padding: 0.25em 0.5em;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.space-between {
+  justify-content: space-between;
 }
 
 .rating-row {
@@ -181,6 +193,12 @@ main {
   align-items: center;
   gap: 1rem;
   margin: 1rem 0;
+}
+
+.rating-legend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .rating-row .rating-slider {
@@ -301,12 +319,5 @@ input:disabled {
     width: 100%;
     flex: 0 0 auto;
     padding-bottom: 1.5em;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f5f5f5;
-    background-color: #303030;
   }
 }

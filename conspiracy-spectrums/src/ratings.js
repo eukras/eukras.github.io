@@ -10,35 +10,24 @@
  * - ratings: a signal(Ratings) object that drives rendering.
  */
 
-const addDivider = (statements) => {
-  return {
-    ...statements,
-    '__': '- - - ▲ Silly  ▼ Sensible - - -',
-  };
-}
 
-const removeDivider = (statements) => {
-  return statements.filter(statement => {
-    return statement[0] != '__';
-  })
-}
-
-const getDivider = (statements) => {
-  for (let i = 0; i < statements.length; i++) {
-    if (statements[i][0] == '__') {
-      return statements[i][2];
+function filterBetween(display, minimum, maximum) {
+  return display.reduce((acc, tuple) => {
+    const confidence = tuple[2];
+    console.log(confidence, maximum, minimum);
+    if (confidence >= minimum && confidence <= maximum) {
+      return [...acc, tuple];
+    } else {
+      return acc;
     }
-  }
-  return 0;
+  }, []);
 }
-
 
 const sortRatings = (spectrum, ratings, checked) => {
   if (ratings === null) {
     return [];
   }
-  const statements = addDivider(spectrum.statements);
-  const tuples = Object.entries(statements).map(([id, statement]) => {
+  const tuples = Object.entries(spectrum.statements).map(([id, statement]) => {
     return [id, statement, ratings[id]];
   });
   return tuples.sort((a, b) => {
@@ -52,32 +41,25 @@ const sortRatings = (spectrum, ratings, checked) => {
 }
 
 const getConfidence = (sortedRatings) => {
-  const rowsThatCount = removeDivider(sortedRatings);
-  const sum = rowsThatCount.reduce((acc, val) => {
+  const sum = sortedRatings.reduce((acc, val) => {
     return acc + val[2];
   }, 0);
-  return Math.round(sum * 10 / rowsThatCount.length);
+  return Math.round(sum * 10 / sortedRatings.length);
 }
 
 const getSensibility = (sortedRatings) => {
-  const divider = getDivider(sortedRatings);
   const numSensible = sortedRatings
-    .filter(statement => statement[0] != '__')
     .map(statement => statement[2])
-    .filter(confidence => confidence > divider)
+    .filter(confidence => confidence > 5)
     .length;
-  const numStatements = sortedRatings
-    .filter(val => val[0] != '__')
-    .length;
+  const numStatements = sortedRatings.length;
   return Math.round(numSensible * 100 / numStatements);
 }
 
 export {
-  addDivider,
+  filterBetween,
   getConfidence,
-  getDivider,
   getSensibility,
-  removeDivider,
   sortRatings
 };
 

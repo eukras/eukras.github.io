@@ -24,7 +24,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/preact';
 import { signal } from '@preact/signals';
 import { render } from 'preact';
 
-import { getConfidence, getSensibility, sortRatings } from './ratings';
+import { filterBetween, getConfidence, getSensibility, sortRatings } from './ratings';
 import { SPECTRUMS } from './spectrums';
 import { readUrl, writeUrl } from './uri';
 
@@ -96,15 +96,22 @@ function EnterRatings(props) {
     <Header />
     <main>
       <h2>{spectrum['name']}</h2>
+      <p>Rate the statements in the list below on a scale of zero to ten.</p>
       <p>
-        On a scale of 0 to 10, how confident are you about each of the
-        following statements? Where would you draw the line between the
-        statements that are silly and the ones that are sensible? Assume that
-        zero means an absolute impossibility, ten means you'd bet your life
-        on it, and five means that you have no opinion one way or the other.
-        Initial values are random, and rows will sort themselves as you go.
+        Zero means you're absolutely sure it's false, and ten means you're
+        absolutely sure it's true. More than five means you think it's not a
+        silly idea -- it's at least sensible. Five means you have no opinion
+        either way.
       </p>
+
       <RatingTable locked={false} />
+
+      <div class="results">
+        <h2>Your results</h2>
+        <p>You gave this list of statements <b>{getConfidence(display.value)}%</b> total
+          confidence, and thought <b>{getSensibility(display.value)}%</b> of
+          them were sensible ideas.</p>
+      </div>
       <div class="button-list">
         <a class="button button-primary" href={writeUrl(spectrum, ratings.value)} target="_blank">Share your answers</a>
         <a href={'/index.html'} class="button button-secondary">See other spectrums</a>
@@ -122,7 +129,7 @@ function EnterRatings(props) {
       <p>{spectrum['description']}</p>
     </main>
     <Footer />
-  </div>
+  </div >
 }
 
 function ShareRatings(props) {
@@ -135,10 +142,8 @@ function ShareRatings(props) {
       </p>
       <p class="help">
         They were asked to say how confident they were about the following
-        statements, and to draw a line between the silly and the sensible ones.
-        Zero means an absolute impossibility, ten means they'd bet their life on it,
-        and five means they have no opinion one way or the other. They gave this
-        list of statements <b>{getConfidence(display.value)}%</b> total
+        statements, and to identify which they thought were at least sensible.
+        They gave this list of statements <b>{getConfidence(display.value)}%</b> total
         confidence, and thought <b>{getSensibility(display.value)}%</b> of them
         were sensible.
       </p>
@@ -161,26 +166,39 @@ function RatingTable(props) {
   return <div class="ratings-table">
     <RatingHeader count={true} />
     <RatingRows locked={props.locked} />
-    <RatingHeader count={false} />
+    <RatingSummary />
   </div>
 }
 
+function RatingSummary(props) {
+  return <div class="rating-header space-around">
+    {props.count && <small>(done {Object.keys(checked.value).length} of {display.value.length} rows)</small>}
+  </div>;
+}
+
 function RatingHeader(props) {
-  return <div class="rating-row">
-    <div class="rating-slider number-legend">
-      {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => <small>{key}</small>)}
+  return <>
+    <div class="rating-row">
+      <div class="rating-slider rating-legend space-between">
+        {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => {
+          return <small>{key}</small>
+        })}
+      </div>
+      <div class="rating-statement text-right"></div>
     </div>
-    <div class="rating-statement text-right">
-      {props.count && <small>(done {Object.keys(checked.value).length} of {display.value.length} rows)</small>}
-    </div>
-  </div>
+  </>
 }
 
 function RatingRows(props) {
   const [parent] = useAutoAnimate({ duration: 500, });
+
+  const silly = filterBetween(display.value, 0, 4)
+  const unsure = filterBetween(display.value, 5, 5);
+  const sensible = filterBetween(display.value, 6, 10)
+
   return <>
     <div ref={parent}>
-      {display.value.map((tuple) => {
+      {silly.map((tuple) => {
         const [id, statement, confidence] = tuple;
         const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
         return <div key={id} class="rating-row">
@@ -192,18 +210,61 @@ function RatingRows(props) {
               onClick={(e) => setChecked(id)}
             />
           </div>
-          {id == '__' && <div class="rating-statement text-center text-divider">
-            <div>SILLY IDEAS</div>
-            <hr class="dashed" />
-            <div>SENSIBLE IDEAS</div>
-          </div>}
-          {id != '__' && <div class="rating-statement">{statement}</div>}
+          <div class="rating-statement">{statement}</div>
         </div>
       })}
-    </div>
+      {silly.length > 0 && unsure.length > 0 &&
+        <div key="silly" class="rating-statement text-center text-divider">
+          <div>Silly ideas above this line</div>
+          <hr class="dashed" />
+        </div>
+      }
+      {unsure.map(tuple => {
+        const [id, statement, confidence] = tuple;
+        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
+        return <div key={id} class="rating-row">
+          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
+            <input id={'input-' + id} class={classNames}
+              type="range" min="0" max="10"
+              disabled={props.locked} value={confidence}
+              onChange={(e) => setRating(id, e.currentTarget.value)}
+              onClick={(e) => setChecked(id)}
+            />
+          </div>
+          <div class="rating-statement">{statement}</div>
+        </div>
+      })}
+      {silly.length > 0 && sensible.length > 0 && unsure.length == 0 &&
+        <div key="silly-sensible" class="rating-statement text-center text-divider">
+          <div>Silly ideas above this line</div>
+          <hr class="dashed" />
+          <div>Sensible ideas below this line</div>
+        </div>
+      }
+      {sensible.length > 0 && unsure.length > 0 &&
+        <div key="sensible" class="rating-statement text-center text-divider">
+          <hr class="dashed" />
+          <div>Sensible ideas below this line</div>
+        </div>
+      }
+      {sensible.map(tuple => {
+        const [id, statement, confidence] = tuple;
+        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
+        return <div key={id} class="rating-row">
+          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
+            <input id={'input-' + id} class={classNames}
+              type="range" min="0" max="10"
+              disabled={props.locked} value={confidence}
+              onChange={(e) => setRating(id, e.currentTarget.value)}
+              onClick={(e) => setChecked(id)}
+            />
+          </div>
+          <div class="rating-statement">{statement}</div>
+        </div>
+      })}
+    </div >
   </>;
 }
-
 
 function Header(props) {
   return <header>
