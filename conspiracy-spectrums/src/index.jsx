@@ -179,10 +179,12 @@ function RatingSummary(props) {
 function RatingHeader(props) {
   return <>
     <div class="rating-row">
-      <div class="rating-slider rating-legend space-between">
-        {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => {
-          return <small>{key}</small>
-        })}
+      <div class="rating-slider">
+        <div class="rating-legend space-between">
+          {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => {
+            return <small>{key}</small>
+          })}
+        </div>
       </div>
       <div class="rating-statement text-right"></div>
     </div>
