@@ -85,6 +85,7 @@ function SelectSpectrum(props) {
           return <a href={"?" + id}>{spectrum['name']}</a>
         })}
       </div>
+      <p><small>* Spectrums with an asterisk assume a detailed knowledge of their topic.</small></p>
       <ExplainSpectrums />
     </main>
     <Footer />
@@ -95,39 +96,47 @@ function EnterRatings(props) {
   return <div class="enter-ratings" >
     <Header />
     <main>
-      <h2>{spectrum['name']}</h2>
-      <p>Rate the statements in the list below on a scale of zero to ten.</p>
-      <p>
-        Zero means you're absolutely sure it's false, and ten means you're
-        absolutely sure it's true. More than five means you think it's not a
-        silly idea -- it's at least sensible. Five means you have no opinion
-        either way.
-      </p>
-
+      <RatingsLegend />
+      <h2>{spectrum['name'].replace(' *', '')}</h2>
+      {spectrum['name'].includes(' *') &&
+        <p class="highlight"><small><b>Note.</b> This spectrum assumes a detailed knowledge of its topic.</small></p>
+      }
+      <p>Rate the {display.value.length} statements below on a scale of zero to ten.</p>
       <RatingTable locked={false} />
 
       <div class="results">
         <h2>Your results</h2>
         <p>You gave this list of statements <b>{getConfidence(display.value)}%</b> total
-          confidence, and thought <b>{getSensibility(display.value)}%</b> of
+          confidence.</p>
+        <p>You thought <b>{getSensibility(display.value)}%</b> of
           them were sensible ideas.</p>
       </div>
       <div class="button-list">
-        <a class="button button-primary" href={writeUrl(spectrum, ratings.value)} target="_blank">Share your answers</a>
-        <a href={'/index.html'} class="button button-secondary">See other spectrums</a>
+        <a href={writeUrl(spectrum, ratings.value)} target="_blank">Share your confidence</a>
+        <a href={'/index.html'}>See other spectrums</a>
       </div>
+
       <h2>Why share?</h2>
       <p>Conspiracy theories can be especially hard to discuss if
-        we only rely on assumptions about what we each believe. <a
-          href="https://twitter.com/hashtag/ConspiracySpectrums">#ConspiracySpectrums</a> save
+        we only rely on assumptions about what we each believe. save
         us guessing, and can lead to better conversations. Use the button
         above to share your conspiracy spectrum with friends and family, or
         online, and discuss why you think differently at various
-        points. <a href="index.html">More information?</a></p>
+        points.</p>
+      <div class="button-list">
+        <a href="https://twitter.com/hashtag/ConspiracySpectrums">#Conspiracy&shy;Spectrums</a>
+        <a href="index.html">More information?</a>
+      </div>
 
       <h2>About this spectrum</h2>
       <p>{spectrum['description']}</p>
-    </main>
+      {
+        spectrum['button_text'] && spectrum['button_href'] &&
+        <div class="button-list">
+          <a target="_blank" href={spectrum['button_href']}>{spectrum['button_text']}</a>
+        </div>
+      }
+    </main >
     <Footer />
   </div >
 }
@@ -136,23 +145,24 @@ function ShareRatings(props) {
   return <div class="enter-ratings" >
     <Header />
     <main>
-      <h2>{spectrum['name']}</h2>
-      <p>
-        <b>This is <a target="_blank" href={writeUrl(spectrum, ratings.value)}>a shareable link</a> to another person's conspiracy spectrum.</b>
+      <RatingsLegend />
+      <h2>{spectrum['name'].replace(' *', '')}</h2>
+      <p class="highlight">
+        This is a shareable link to another person's conspiracy spectrum.
       </p>
       <p class="help">
-        They were asked to say how confident they were about the following
-        statements, and to identify which they thought were at least sensible.
-        They gave this list of statements <b>{getConfidence(display.value)}%</b> total
-        confidence, and thought <b>{getSensibility(display.value)}%</b> of them
-        were sensible.
+        They were asked to say how confident they were about the {display.value.length} statements below, and to identify which they thought were at least sensible.
       </p>
+      <p>They gave this list of statements <b>{getConfidence(display.value)}%</b> total
+        confidence.</p>
+      <p>They thought <b>{getSensibility(display.value)}%</b> of these statements
+        were sensible.</p>
       <RatingTable locked={true} />
       <h2>Create your own!</h2>
       <p>You can fill in this conspiracy spectrum yourself and share your
         confidence ratings with friends.</p>
       <div class="button-list">
-        <a class="button button-primary" href={'?' + spectrum.id} target="_blank">Create your own!</a>
+        <a href={'?' + spectrum.id} target="_blank">Create your own!</a>
         <a href={'/index.html'} class="button button-secondary">See other spectrums</a>
       </div>
       <h2>About this spectrum</h2>
@@ -160,6 +170,37 @@ function ShareRatings(props) {
     </main>
     <Footer />
   </div>
+}
+
+function RatingsLegend(props) {
+  return <>
+    <table class="hide-mobile">
+      <tr><th>0</th><th>1 – 4</th><th>5</th><th>6 – 9</th><th>10</th></tr>
+      <tr><td>Certainly false</td><td>Silly or doubtful</td><td>No opinion either way</td><td>Sensible or plausible</td><td>Certainly true</td></tr>
+    </table>
+    <table class="show-mobile">
+      <tr>
+        <th>0</th>
+        <td>Certainly false</td>
+      </tr>
+      <tr>
+        <th>1 – 4</th>
+        <td>Silly or doubtful</td>
+      </tr>
+      <tr>
+        <th>5</th>
+        <td>No opinion either way</td>
+      </tr>
+      <tr>
+        <th>6 – 9</th>
+        <td>Sensible or plausible</td>
+      </tr>
+      <tr>
+        <th>10</th>
+        <td>Certainly true</td>
+      </tr>
+    </table>
+  </>
 }
 
 function RatingTable(props) {
@@ -178,7 +219,7 @@ function RatingSummary(props) {
 
 function RatingHeader(props) {
   return <>
-    <div class="rating-row">
+    <div class="rating-row rating-reverse-order">
       <div class="rating-slider">
         <div class="rating-legend space-between">
           {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => {
@@ -186,7 +227,8 @@ function RatingHeader(props) {
           })}
         </div>
       </div>
-      <div class="rating-statement text-right"></div>
+      <div class="rating-statement text-right hide-mobile">
+      </div>
     </div>
   </>
 }
@@ -194,12 +236,38 @@ function RatingHeader(props) {
 function RatingRows(props) {
   const [parent] = useAutoAnimate({ duration: 500, });
 
-  const silly = filterBetween(display.value, 0, 4)
+  const impossible = filterBetween(display.value, 0, 0)
+  const not_impossible = filterBetween(display.value, 1, 10)
+  const silly = filterBetween(display.value, 1, 4)
+  const not_silly = filterBetween(display.value, 5, 10)
   const unsure = filterBetween(display.value, 5, 5);
-  const sensible = filterBetween(display.value, 6, 10)
+  const sensible = filterBetween(display.value, 6, 9)
+  const not_sensible = filterBetween(display.value, 1, 5)
+  const certain = filterBetween(display.value, 10, 10)
+  const not_certain = filterBetween(display.value, 0, 9)
 
   return <>
     <div ref={parent}>
+      {impossible.map((tuple) => {
+        const [id, statement, confidence] = tuple;
+        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
+        return <div key={id} class="rating-row">
+          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
+            <input id={'input-' + id} class={classNames}
+              type="range" min="0" max="10"
+              disabled={props.locked} value={confidence}
+              onChange={(e) => setRating(id, e.currentTarget.value)}
+              onClick={(e) => setChecked(id)}
+            />
+          </div>
+          <div class="rating-statement">{statement}</div>
+        </div>
+      })}
+      {impossible.length > 0 && not_impossible.length > 0 &&
+        <div key="silly" class="rating-statement text-center text-divider">
+          <div>Certainly false ideas above this line</div>
+        </div>
+      }
       {silly.map((tuple) => {
         const [id, statement, confidence] = tuple;
         const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
@@ -215,10 +283,9 @@ function RatingRows(props) {
           <div class="rating-statement">{statement}</div>
         </div>
       })}
-      {silly.length > 0 && unsure.length > 0 &&
+      {silly.length > 0 && not_silly.length > 0 &&
         <div key="silly" class="rating-statement text-center text-divider">
-          <div>Silly ideas above this line</div>
-          <hr class="dashed" />
+          <div>Silly or doubtful ideas above this line</div>
         </div>
       }
       {unsure.map(tuple => {
@@ -236,20 +303,32 @@ function RatingRows(props) {
           <div class="rating-statement">{statement}</div>
         </div>
       })}
-      {silly.length > 0 && sensible.length > 0 && unsure.length == 0 &&
-        <div key="silly-sensible" class="rating-statement text-center text-divider">
-          <div>Silly ideas above this line</div>
-          <hr class="dashed" />
-          <div>Sensible ideas below this line</div>
-        </div>
-      }
-      {sensible.length > 0 && unsure.length > 0 &&
+      {sensible.length > 0 && not_sensible.length > 0 &&
         <div key="sensible" class="rating-statement text-center text-divider">
-          <hr class="dashed" />
-          <div>Sensible ideas below this line</div>
+          <div>Sensible or plausible ideas below this line</div>
         </div>
       }
       {sensible.map(tuple => {
+        const [id, statement, confidence] = tuple;
+        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
+        return <div key={id} class="rating-row">
+          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
+            <input id={'input-' + id} class={classNames}
+              type="range" min="0" max="10"
+              disabled={props.locked} value={confidence}
+              onChange={(e) => setRating(id, e.currentTarget.value)}
+              onClick={(e) => setChecked(id)}
+            />
+          </div>
+          <div class="rating-statement">{statement}</div>
+        </div>
+      })}
+      {certain.length > 0 && not_certain.length > 0 &&
+        <div key="certain" class="rating-statement text-center text-divider">
+          <div>Certainly true ideas below this line</div>
+        </div>
+      }
+      {certain.map(tuple => {
         const [id, statement, confidence] = tuple;
         const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
         return <div key={id} class="rating-row">
@@ -271,9 +350,35 @@ function RatingRows(props) {
 function Header(props) {
   return <header>
     <h1>
-      <a href="index.html">Conspiracy Spectrums</a>
+      <a href="index.html">
+        <div class="waviy">
+          <p class="no-break">
+            <span style="--i:0">C</span>
+            <span style="--i:1">o</span>
+            <span style="--i:1">n</span>
+            <span style="--i:3">s</span>
+            <span style="--i:1">p</span>
+            <span style="--i:1">i</span>
+            <span style="--i:1">r</span>
+            <span style="--i:1">a</span>
+            <span style="--i:0">c</span>
+            <span style="--i:1">y</span>
+          </p>
+          <p class="no-break">
+            <span style="--i:3">S</span>
+            <span style="--i:1">p</span>
+            <span style="--i:1">e</span>
+            <span style="--i:0">c</span>
+            <span style="--i:1">t</span>
+            <span style="--i:1">r</span>
+            <span style="--i:1">u</span>
+            <span style="--i:1">m</span>
+            <span style="--i:3">s</span>
+          </p>
+        </div>
+      </a>
     </h1>
-    <div class="subtitle">Share your answers, for better conversations</div>
+    <div class="subtitle">Share your confidence, for better conversations</div>
   </header>
 }
 
@@ -281,9 +386,11 @@ function Footer(props) {
   return <footer>
     <h2>Comments and ideas?</h2>
     <p>
-      With comments and ideas, or to suggest new spectrums, contact <a
-        href="mailto:nigel@chapman.id.au">nigel@chapman.id.au</a>.
+      With any suggestions, including new spectrums, contact:
     </p>
+    <div class="button-list">
+      <a href="mailto:nigel@chapman.id.au">Nigel Chapman</a>
+    </div>
   </footer>
 }
 
@@ -352,11 +459,13 @@ function ExplainSpectrums(props) {
 
     <h2>More information</h2>
 
-    <p>This site was created for the ISCAST publication <a target="_blank"
-      href="https://iscast.org/conspiracy/">Who to Trust? Christian Belief in
-      Conspiracy Theories</a> (2022), which offers a popular-level introduction
-      to current research on conspiracy theories and considers them from a
-      Christian ethical viewpoint.</p>
+    <p>This site was created for the 2022 ISCAST publication:</p>
+
+    <div class="button-list">
+      <a target="_blank" href="https://iscast.org/conspiracy/">
+        Who to Trust? Christian Belief in Conspiracy Theories
+      </a>
+    </div>
 
   </div>
 }
