@@ -24,22 +24,15 @@ import { useAutoAnimate } from '@formkit/auto-animate/preact';
 import { signal } from '@preact/signals';
 import { render } from 'preact';
 
-import { filterBetween, getConfidence, getSensibility, sortRatings } from './ratings';
+import { filterBetween, getAverageConfidence, sortRatings } from './ratings';
 import { SPECTRUMS } from './spectrums';
 import { readUrl, writeUrl } from './uri';
-
-const COLORS = [
-  "#defde0", "#def9ec", "#def5f7", "#e2effd",
-  "#e9e7fd", "#f0defd", "#f5def1", "#fadfe5",
-  "#fde4df", "#fceede", "#fcf7de"
-];
 
 import './style.css';
 
 const [spectrum, ratingsObj, locked] = readUrl(SPECTRUMS);
 
 const ratings = signal(ratingsObj);
-const checked = signal({});
 const initial = sortRatings(spectrum, ratings.value);
 const display = signal(initial);
 
@@ -61,18 +54,6 @@ function setRating(id, confidence) {
     ...ratings.value,
     [id]: parseInt(confidence),
   };
-  checked.value = {
-    ...checked.value,
-    [id]: true,
-  }
-  display.value = sortRatings(spectrum, ratings.value);
-}
-
-function setChecked(id) {
-  checked.value = {
-    ...checked.value,
-    [id]: true,
-  }
   display.value = sortRatings(spectrum, ratings.value);
 }
 
@@ -82,7 +63,7 @@ function SelectSpectrum(props) {
     <main>
       <div class="button-list">
         {Object.entries(SPECTRUMS).map(([id, spectrum]) => {
-          return <a href={"?" + id}>{spectrum['name']}</a>
+          return <a href={"?" + id}>{spectrum['name']}{spectrum['detailed'] ? ' *' : ''}</a>
         })}
       </div>
       <p><small>* Spectrums with an asterisk assume a detailed knowledge of their topic.</small></p>
@@ -96,33 +77,34 @@ function EnterRatings(props) {
   return <div class="enter-ratings" >
     <Header />
     <main>
-      <RatingsLegend />
-      <h2>{spectrum['name'].replace(' *', '')}</h2>
-      {spectrum['name'].includes(' *') &&
-        <p class="highlight"><small><b>Note.</b> This spectrum assumes a detailed knowledge of its topic.</small></p>
+      {spectrum['detailed'] &&
+        <div class="space-above-2em">
+          <p class="highlight"><b>Note.</b> This spectrum assumes a detailed knowledge of its topic.</p>
+        </div>
       }
-      <p>Rate the {display.value.length} statements below on a scale of zero to ten.</p>
-      <RatingTable locked={false} />
-
-      <div class="results">
-        <h2>Your results</h2>
-        <p>You gave this list of statements <b>{getConfidence(display.value)}%</b> total
-          confidence.</p>
-        <p>You thought <b>{getSensibility(display.value)}%</b> of
-          them were sensible ideas.</p>
+      <h2>{spectrum['name']}</h2>
+      <p>Use the sliders to rate the following {display.value.length} statements from zero to ten.</p>
+      <div class="space-2em flex-center">
+        <RatingsLegend />
+      </div>
+      <div class="margin-auto">
+        <RatingTable locked={false} />
+      </div>
+      <div class="space-3em flex-center">
+        <RatingsSummary />
       </div>
       <div class="button-list">
-        <a href={writeUrl(spectrum, ratings.value)} target="_blank">Share your confidence</a>
+        <a href={writeUrl(spectrum, ratings.value)} target="_blank">Share your results</a>
         <a href={'/index.html'}>See other spectrums</a>
       </div>
 
       <h2>Why share?</h2>
-      <p>Conspiracy theories can be especially hard to discuss if
-        we only rely on assumptions about what we each believe. save
-        us guessing, and can lead to better conversations. Use the button
-        above to share your conspiracy spectrum with friends and family, or
-        online, and discuss why you think differently at various
-        points.</p>
+      <p>Conspiracy theories can be especially hard to discuss if we only rely
+        on assumptions about what we each believe. Making and sharing
+        conspiracy spectrums can save us guessing, and can lead to better
+        conversations. Use the button above to share your conspiracy spectrum
+        with friends and family, or online, and discuss why you think
+        differently at various points.</p>
       <div class="button-list">
         <a href="https://twitter.com/hashtag/ConspiracySpectrums">#Conspiracy&shy;Spectrums</a>
         <a href="index.html">More information?</a>
@@ -145,24 +127,22 @@ function ShareRatings(props) {
   return <div class="enter-ratings" >
     <Header />
     <main>
-      <RatingsLegend />
-      <h2>{spectrum['name'].replace(' *', '')}</h2>
+      <RatingsSummary />
+      <h2>About this link</h2>
       <p class="highlight">
         This is a shareable link to another person's conspiracy spectrum.
       </p>
-      <p class="help">
-        They were asked to say how confident they were about the {display.value.length} statements below, and to identify which they thought were at least sensible.
-      </p>
-      <p>They gave this list of statements <b>{getConfidence(display.value)}%</b> total
-        confidence.</p>
-      <p>They thought <b>{getSensibility(display.value)}%</b> of these statements
-        were sensible.</p>
-      <RatingTable locked={true} />
-      <h2>Create your own!</h2>
+      <p>They were asked to say how confident they were about the {display.value.length} statements below, on a scale of zero to ten.</p>
+      <RatingsLegend />
+      <p>You may have some questions about <i>why</i> they believe one thing or don't believe another. Ask them. That's the whole idea of conspiracy spectrums.</p>
+      <div class="space">
+        <RatingTable locked={true} />
+      </div>
+      <h2>Create your own</h2>
       <p>You can fill in this conspiracy spectrum yourself and share your
         confidence ratings with friends.</p>
       <div class="button-list">
-        <a href={'?' + spectrum.id} target="_blank">Create your own!</a>
+        <a href={'?' + spectrum.id} target="_blank">Create your own</a>
         <a href={'/index.html'} class="button button-secondary">See other spectrums</a>
       </div>
       <h2>About this spectrum</h2>
@@ -176,7 +156,7 @@ function RatingsLegend(props) {
   return <>
     <table class="hide-mobile">
       <tr><th>0</th><th>1 – 4</th><th>5</th><th>6 – 9</th><th>10</th></tr>
-      <tr><td>Certainly false</td><td>Silly or doubtful</td><td>No opinion either way</td><td>Sensible or plausible</td><td>Certainly true</td></tr>
+      <tr><td>Certainly false</td><td>More likely false</td><td>No opinion either way</td><td>More likely true</td><td>Certainly true</td></tr>
     </table>
     <table class="show-mobile">
       <tr>
@@ -185,7 +165,7 @@ function RatingsLegend(props) {
       </tr>
       <tr>
         <th>1 – 4</th>
-        <td>Silly or doubtful</td>
+        <td>More likely false</td>
       </tr>
       <tr>
         <th>5</th>
@@ -193,7 +173,7 @@ function RatingsLegend(props) {
       </tr>
       <tr>
         <th>6 – 9</th>
-        <td>Sensible or plausible</td>
+        <td>More likely true</td>
       </tr>
       <tr>
         <th>10</th>
@@ -203,141 +183,183 @@ function RatingsLegend(props) {
   </>
 }
 
-function RatingTable(props) {
-  return <div class="ratings-table">
-    <RatingHeader count={true} />
-    <RatingRows locked={props.locked} />
-    <RatingSummary />
-  </div>
-}
+function RatingsSummary(props) {
 
-function RatingSummary(props) {
-  return <div class="rating-header space-around">
-    {props.count && <small>(done {Object.keys(checked.value).length} of {display.value.length} rows)</small>}
-  </div>;
-}
-
-function RatingHeader(props) {
+  const impossible = filterBetween(display.value, 0, 0)
+  const silly = filterBetween(display.value, 1, 4)
+  const unsure = filterBetween(display.value, 5, 5);
+  const sensible = filterBetween(display.value, 6, 9)
+  const certain = filterBetween(display.value, 10, 10)
+  const impossibleScore = Math.round(impossible.length / display.value.length * 100);
+  const sillyScore = Math.round(silly.length / display.value.length * 100);
+  const unsureScore = Math.round(unsure.length / display.value.length * 100);
+  const sensibleScore = Math.round(sensible.length / display.value.length * 100);
+  const certainScore = Math.round(certain.length / display.value.length * 100);
+  const average = getAverageConfidence(display.value);
   return <>
-    <div class="rating-row rating-reverse-order">
-      <div class="rating-slider">
-        <div class="rating-legend space-between">
-          {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => {
-            return <small>{key}</small>
-          })}
-        </div>
+    <div class="rounded-box">
+      <div class="space">
+        <div class="text-large"><b>{spectrum.name}</b></div>
+        <div>Conspiracy Spectrum</div>
       </div>
-      <div class="rating-statement text-right hide-mobile">
+      <div class="space-2em flex-center">
+        <table class="hide-mobile">
+          <tr>
+            <th>{impossibleScore}<span class="percent">%</span></th>
+            <th>{sillyScore}<span class="percent">%</span></th>
+            <th>{unsureScore}<span class="percent">%</span></th>
+            <th>{sensibleScore}<span class="percent">%</span></th>
+            <th>{certainScore}<span class="percent">%</span></th>
+          </tr>
+          <tr>
+            <td>Certainly false</td>
+            <td>More likely false</td>
+            <td>No opinion either way</td>
+            <td>More likely true</td>
+            <td>Certainly true</td>
+          </tr>
+        </table>
+        <table class="show-mobile">
+          <tr>
+            <th>{impossibleScore}<span class="percent">%</span></th>
+            <td>Certainly false</td>
+          </tr>
+          <tr>
+            <th>{sillyScore}<span class="percent">%</span></th>
+            <td>More likely false</td>
+          </tr>
+          <tr>
+            <th>{unsureScore}<span class="percent">%</span></th>
+            <td>No opinion either way</td>
+          </tr>
+          <tr>
+            <th>{sensibleScore}<span class="percent">%</span></th>
+            <td>More likely true</td>
+          </tr>
+          <tr>
+            <th>{certainScore}<span class="percent">%</span></th>
+            <td>Certainly true</td>
+          </tr>
+        </table>
+      </div>
+      <div class="space">
+        <div>Average confidence: <b>{average}</b> / 10</div>
+        <div><small>https://eukras.github.io</small></div>
       </div>
     </div>
   </>
 }
 
+function RatingTable(props) {
+  return <div class="ratings-table">
+    <RatingRows locked={props.locked} />
+  </div>
+}
+
+function RatingHeader(props) {
+  return <>
+    <div class="rating-row rating-header">
+      {false &&
+        <div class="rating-slider">
+          <div class="rating-legend space-between">
+            {[' 0', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => {
+              return <small>{key}</small>
+            })}
+          </div>
+        </div>
+      }
+      <b>{props.title}</b>
+    </div>
+  </>
+}
+
 function RatingRows(props) {
+
   const [parent] = useAutoAnimate({ duration: 500, });
 
   const impossible = filterBetween(display.value, 0, 0)
-  const not_impossible = filterBetween(display.value, 1, 10)
   const silly = filterBetween(display.value, 1, 4)
-  const not_silly = filterBetween(display.value, 5, 10)
   const unsure = filterBetween(display.value, 5, 5);
   const sensible = filterBetween(display.value, 6, 9)
-  const not_sensible = filterBetween(display.value, 1, 5)
   const certain = filterBetween(display.value, 10, 10)
-  const not_certain = filterBetween(display.value, 0, 9)
 
   return <>
     <div ref={parent}>
+      {impossible.length > 0 &&
+        <RatingHeader title="Certainly false" />
+      }
       {impossible.map((tuple) => {
         const [id, statement, confidence] = tuple;
-        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
         return <div key={id} class="rating-row">
-          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
-            <input id={'input-' + id} class={classNames}
+          <div class={'rating-slider confidence-' + confidence}>
+            <input id={'input-' + id} class="slider"
               type="range" min="0" max="10"
               disabled={props.locked} value={confidence}
               onChange={(e) => setRating(id, e.currentTarget.value)}
-              onClick={(e) => setChecked(id)}
             />
           </div>
           <div class="rating-statement">{statement}</div>
         </div>
       })}
-      {impossible.length > 0 && not_impossible.length > 0 &&
-        <div key="silly" class="rating-statement text-center text-divider">
-          <div>Certainly false ideas above this line</div>
-        </div>
+      {silly.length > 0 &&
+        <RatingHeader title="More likely false" />
       }
       {silly.map((tuple) => {
         const [id, statement, confidence] = tuple;
-        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
         return <div key={id} class="rating-row">
-          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
-            <input id={'input-' + id} class={classNames}
+          <div class={'rating-slider confidence-' + confidence}>
+            <input id={'input-' + id} class="slider"
               type="range" min="0" max="10"
               disabled={props.locked} value={confidence}
               onChange={(e) => setRating(id, e.currentTarget.value)}
-              onClick={(e) => setChecked(id)}
             />
           </div>
           <div class="rating-statement">{statement}</div>
         </div>
       })}
-      {silly.length > 0 && not_silly.length > 0 &&
-        <div key="silly" class="rating-statement text-center text-divider">
-          <div>Silly or doubtful ideas above this line</div>
-        </div>
+      {unsure.length > 0 &&
+        <RatingHeader title="No opinion either way" />
       }
       {unsure.map(tuple => {
         const [id, statement, confidence] = tuple;
-        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
         return <div key={id} class="rating-row">
-          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
-            <input id={'input-' + id} class={classNames}
+          <div class={'rating-slider confidence-' + confidence}>
+            <input id={'input-' + id} class="slider"
               type="range" min="0" max="10"
               disabled={props.locked} value={confidence}
               onChange={(e) => setRating(id, e.currentTarget.value)}
-              onClick={(e) => setChecked(id)}
             />
           </div>
           <div class="rating-statement">{statement}</div>
         </div>
       })}
-      {sensible.length > 0 && not_sensible.length > 0 &&
-        <div key="sensible" class="rating-statement text-center text-divider">
-          <div>Sensible or plausible ideas below this line</div>
-        </div>
+      {sensible.length > 0 &&
+        <RatingHeader title="More likely true" />
       }
       {sensible.map(tuple => {
         const [id, statement, confidence] = tuple;
-        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
         return <div key={id} class="rating-row">
-          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
-            <input id={'input-' + id} class={classNames}
+          <div class={'rating-slider confidence-' + confidence}>
+            <input id={'input-' + id} class="slider"
               type="range" min="0" max="10"
               disabled={props.locked} value={confidence}
               onChange={(e) => setRating(id, e.currentTarget.value)}
-              onClick={(e) => setChecked(id)}
             />
           </div>
           <div class="rating-statement">{statement}</div>
         </div>
       })}
-      {certain.length > 0 && not_certain.length > 0 &&
-        <div key="certain" class="rating-statement text-center text-divider">
-          <div>Certainly true ideas below this line</div>
-        </div>
+      {certain.length > 0 &&
+        <RatingHeader title="Certainly true" />
       }
       {certain.map(tuple => {
         const [id, statement, confidence] = tuple;
-        const classNames = 'slider' + (checked.value[id] === true ? ' checked' : '')
         return <div key={id} class="rating-row">
-          <div class="rating-slider" style={{ 'background-color': COLORS[confidence] }}>
-            <input id={'input-' + id} class={classNames}
+          <div class={'rating-slider confidence-' + confidence}>
+            <input id={'input-' + id} class="slider"
               type="range" min="0" max="10"
               disabled={props.locked} value={confidence}
               onChange={(e) => setRating(id, e.currentTarget.value)}
-              onClick={(e) => setChecked(id)}
             />
           </div>
           <div class="rating-statement">{statement}</div>

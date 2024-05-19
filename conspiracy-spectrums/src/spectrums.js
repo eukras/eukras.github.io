@@ -1,11 +1,12 @@
 const SPECTRUMS = {
   'jfk_assassination': {
     id: 'jfk_assassination',
-    name: 'JFK Assassination *',
+    name: 'JFK Assassination',
     version: '1.0',
     description: "This spectrum was contributed by Michel Gagné, author of \"Thinking Critically about the Kennedy Assassination\" (Routledge, 2022) and host of the Paranoid Planet podcast.",
     button_text: "Paranoid Planet",
     button_href: "https://www.paranoidplanet.ca/",
+    detailed: true,
     statements: {
       '3h': 'Three hoboes photographed in Dealey Plaza on 22 November 1963 were in fact CIA sponsored assassins.',
       'bh': "The Bethesda Naval Hospital pathologists (in Washington) faked their autopsy records",
@@ -28,7 +29,7 @@ const SPECTRUMS = {
       'ph': "The 'backyard photos' of Lee Harvey Oswald holding a Mannlicher-Carcano rifle were faked to make Oswald look guilty.",
       'ph': "The Parkland Hospital doctors (in Dallas) witnessed a huge exit wound in the back of JFK's head.",
       'ps': "JFK was killed because he wanted to end the Cold War with the Soviets.",
-      'pt': 'Lee Havey Oswald did not shoot President Kennedy; he was, as he said, a "patsy".',
+      'pt': 'Lee Harvey Oswald did not shoot President Kennedy; he was, as he said, a "patsy".',
       's2': 'A second shooter on the "Grassy Knoll" shot and struck JFK in the front of the head.',
       'sh': 'A second shooter on the "Grassy Knoll" shot at JFK but missed.',
       'sr': "Southern racists (e.g., Ku Klux Klan, Joseph Milteer, Edwin Walker, etc.) were involved in planning Kennedy's assassination.",
@@ -63,7 +64,7 @@ const SPECTRUMS = {
       'fx': "COVID-19 is being exploited to make the public give up their freedoms",
       'gr': "COVID-19 conspiracies exist and are part of larger global conspiracies such as a 'New World Order' or 'Great Reset'",
       'gi': "COVID-19 vaccine company shareholders include United States politicians",
-      'ht': "COVID-19 mRNA vaccine boosters cause a high rate of heart attacks in young people",
+      'ht': "COVID-19 mRNA vaccines can cause myocarditis (heart disease) in otherwise healthy people",
       'hx': "COVID-19 doesn't exist; it's 100% a hoax",
       'ic': "COVID-19 is an internationalist conspiracy to undermine national sovereignty",
       'im': "COVID-19 has been disproportionately spread by immigrant communities",
@@ -72,7 +73,7 @@ const SPECTRUMS = {
       'iv': "COVID-19 treatments like Ivermectin or hydroxychloroquine are being suppressed for non-medical reasons",
       'jw': "COVID-19 is a conspiracy by Jewish globalists",
       'lt': "COVID-19 variants have consistently been less dangerous than authorities have claimed",
-      'mk': "COVID-19 masks are a health risk",
+      'mk': "COVID-19 masks don't reduce the likelihood of infection",
       'mm': "COVID-19 vaccines have consistently provided less resistance to the virus than authorities have claimed",
       'nb': "COVID-19 vaccine injections contain technological materials such as magnets, nanobots, or microchips",
       'nt': "COVID-19 vaccines have not been properly tested",
@@ -127,8 +128,9 @@ const SPECTRUMS = {
     name: 'US Classics 2018',
     version: '1.0',
     description: "This top-ten list of mostly-American conspiracy theories appears in Chapter 2 " +
-      "of 'Escaping the Rabbit Hole' (Mick West, 2018). An updated list would include news media, " +
-      "electoral fraud, COVID-19, and QAnon.",
+      "of 'Escaping the Rabbit Hole' (Mick West, 2018).",
+    button_text: "Mick West",
+    button_href: "https://mickwest.com/",
     statements: {
       'bp': "pharmaceutical companies conspire to maximise profit by selling drugs that people do not actually need",
       'gw': "climate change is not caused by man-made carbon emissions, and there's some other motive for claiming this",

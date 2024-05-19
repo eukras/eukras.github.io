@@ -40,6 +40,17 @@ const sortRatings = (spectrum, ratings, checked) => {
   });
 }
 
+
+const getAverageConfidence = (sortedRatings) => {
+  const sum = sortedRatings.reduce((acc, val) => {
+    return val[2] == 5 ? acc : acc + val[2];
+  }, 0);
+  const total = sortedRatings.reduce((acc, val) => {
+    return val[2] == 5 ? acc : acc + 1;
+  }, 0);
+  return total == 0 ? '–' : (Math.round(sum * 10 / total) / 10);
+}
+
 const getConfidence = (sortedRatings) => {
   const sum = sortedRatings.reduce((acc, val) => {
     return acc + val[2];
@@ -59,6 +70,7 @@ const getSensibility = (sortedRatings) => {
 export {
   filterBetween,
   getConfidence,
+  getAverageConfidence,
   getSensibility,
   sortRatings
 };
