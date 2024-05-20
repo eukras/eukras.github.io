@@ -102,6 +102,8 @@ const SPECTRUMS = {
     name: 'Trump 2020',
     version: '1.0',
     description: "This spectrum is based on the Wikipedia page, 'List of conspiracy theories promoted by Donald Trump', as of February 2022. It is limited to claims that Trump has explicitly endorsed.",
+    button_text: "Wikipedia",
+    button_href: "https://en.wikipedia.org/wiki/List_of_conspiracy_theories_promoted_by_Donald_Trump",
     statements: {
       '16': "Millions of illegal immigrants voted in the 2016 presidential election, costing Trump the popular vote",
       '20': "There was widespread electoral fraud in the 2020 presidential election; it was 'stolen' from Trump, who legitimately won",
@@ -149,6 +151,8 @@ const SPECTRUMS = {
     name: 'US Right Wing 2015',
     version: '1.0',
     description: "This spectrum is based on the 2015 Salon article “10 Right-Wing Conspiracy Theories That Have Slowly Invaded American Politics” by Mark Potok and Don Terry.",
+    button_text: "Salon Article",
+    button_href: "https://www.salon.com/2015/11/12/10_right_wing_conspiracy_theories_that_have_slowly_invaded_american_politics_partner/",
     statements: {
       'cc': 'the Common Core State Standards in education are political indoctrination',
       'ml': 'the Jade Helm 15 military exercises were a prelude to invoking martial law',
