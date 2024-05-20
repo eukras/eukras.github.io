@@ -69,8 +69,10 @@ header p {
 
 header .subtitle {
   font-style: italic;
-  margin-top: 2em;
+  margin-top: 1em;
   margin-bottom: 2em;
+  font-size: 1.2em;
+  text-wrap: balance;
 }
 
 p {
@@ -85,7 +87,7 @@ h1, h2, h3 {
 h1 {
   text-transform: uppercase;
   line-height: 110%;
-  font-size: 2.8em;
+  font-size: 3.0em;
 }
 
 h2 {
@@ -510,10 +512,7 @@ input:disabled {
     margin: 1.5em 1.5em 3em 1.5em;
   }
   h1 {
-    font-size: 1.8em;
-  }
-  h2 {
-    font-size: 1.4em;
+    font-size: 2.2em;
   }
   table {
   }
@@ -558,13 +557,6 @@ input:disabled {
   body {
     margin: 1.5em 0.5em 2.5em 0.5em;
   }
-  h1 {
-    font-size: 1.8em;
-  }
-  h2 {
-    font-size: 1.4em;
-  }
-
   .button-list {
     grid-template-columns: 1fr;
   }

@@ -83,7 +83,7 @@ function EnterRatings(props) {
         </div>
       }
       <h2>{spectrum['name']}</h2>
-      <p>Use the sliders to rate the following {display.value.length} statements from zero to ten.</p>
+      <p>Use the sliders to rank the following {display.value.length} statements from zero to ten.</p>
       <div class="space-2em flex-center">
         <RatingsLegend />
       </div>
