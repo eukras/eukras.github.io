@@ -4,13 +4,13 @@
  * Based on Mick West, 'Escaping the Rabbit Hole' (2018), ch.2.
  *
  * PAGE 1: Select a spectrum.
- *  - index.html (or anything not matching...)
+ *  - / (or anything not matching...)
  *
  * PAGE 2: Select confidence in each statement. Sort table dynamically. Move divider to show where sensibility begins.
- *  - index.html?covid_19
+ *  - ?covid_19
  *
  * PAGE 3: Display a shareable results link.
- *  - index.html#SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
+ *  - #SUQ9Y292aWRfMTkmdHk9OSZjcz0xM... (etc)
  *
  * Data structures: 
  *  - CONFIDENCE values are 0..10
@@ -95,7 +95,7 @@ function EnterRatings(props) {
       </div>
       <div class="button-list">
         <a href={writeUrl(spectrum, ratings.value)} target="_blank">Share your results</a>
-        <a href={'/index.html'}>See other spectrums</a>
+        <a href={'/'}>See other spectrums</a>
       </div>
 
       <h2>Why share?</h2>
@@ -107,7 +107,7 @@ function EnterRatings(props) {
         differently at various points.</p>
       <div class="button-list">
         <a href="https://twitter.com/hashtag/ConspiracySpectrums">#Conspiracy&shy;Spectrums</a>
-        <a href="index.html">More information?</a>
+        <a href="/">More information?</a>
       </div>
 
       <h2>About this spectrum</h2>
@@ -143,7 +143,7 @@ function ShareRatings(props) {
         confidence ratings with friends.</p>
       <div class="button-list">
         <a href={'?' + spectrum.id} target="_blank">Create your own</a>
-        <a href={'/index.html'} class="button button-secondary">See other spectrums</a>
+        <a href={'/'} class="button button-secondary">See other spectrums</a>
       </div>
       <h2>About this spectrum</h2>
       <p>{spectrum['description']}</p>
@@ -372,7 +372,7 @@ function RatingRows(props) {
 function Header(props) {
   return <header>
     <h1>
-      <a href="index.html">
+      <a href="/">
         <div class="waviy">
           <p class="no-break">
             <span style="--i:0">C</span>
