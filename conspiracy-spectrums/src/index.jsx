@@ -138,11 +138,11 @@ function ShareRatings(props) {
       <div class="space">
         <RatingTable locked={true} />
       </div>
-      <h2>Do it yourself</h2>
+      <h2>Share your answers</h2>
       <p>You can fill in this conspiracy spectrum yourself and share your
         own answers with others.</p>
       <div class="button-list">
-        <a href={'?' + spectrum.id} target="_blank">Do it yourself</a>
+        <a href={'?' + spectrum.id} target="_blank">Share your answers</a>
         <a href={'/'} class="button button-secondary">See other spectrums</a>
       </div>
       <h2>About this spectrum</h2>
