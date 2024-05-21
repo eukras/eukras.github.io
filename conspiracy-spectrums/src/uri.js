@@ -2,8 +2,8 @@
  * Return the spectrum and ratings in the URL. 
  *
  * Page 1: Select Spectrum: /
- * Page 2: Enter Ratings: ?covid_19
- * Page 3: Share Spectrum: #Hdh363f393j43f34f43f43
+ * Page 2: Enter Ratings: /?covid_19
+ * Page 3: Share Spectrum: /#Hdh363f393j43f34f43f43
  *
  * Return: 
  *  - spectrum object from spectrums.js
@@ -44,7 +44,7 @@ function writeUrl(spectrum, ratings) {
     return '&' + id + '=' + confidence;
   });
   const data = 'ID=' + spectrum.id + urlParts.join('');
-  return '#' + encodeBase64(data);
+  return '/#' + encodeBase64(data);
 }
 
 function encodeBase64(str) {

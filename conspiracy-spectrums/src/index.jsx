@@ -94,7 +94,7 @@ function EnterRatings(props) {
         <RatingsSummary />
       </div>
       <div class="button-list">
-        <a href={writeUrl(spectrum, ratings.value)} target="_blank">Share your results</a>
+        <a href={writeUrl(spectrum, ratings.value)} target="_blank">Share your answers</a>
         <a href={'/'}>See other spectrums</a>
       </div>
 
@@ -106,7 +106,7 @@ function EnterRatings(props) {
         with friends and family, or online, and discuss why you think
         differently at various points.</p>
       <div class="button-list">
-        <a href="https://twitter.com/hashtag/ConspiracySpectrums">#Conspiracy&shy;Spectrums</a>
+        <a target="_blank" href="https://twitter.com/hashtag/ConspiracySpectrums">#Conspiracy&shy;Spectrums</a>
         <a href="/">More information?</a>
       </div>
 
@@ -138,11 +138,11 @@ function ShareRatings(props) {
       <div class="space">
         <RatingTable locked={true} />
       </div>
-      <h2>Create your own</h2>
+      <h2>Do it yourself</h2>
       <p>You can fill in this conspiracy spectrum yourself and share your
-        confidence ratings with friends.</p>
+        own answers with others.</p>
       <div class="button-list">
-        <a href={'?' + spectrum.id} target="_blank">Create your own</a>
+        <a href={'?' + spectrum.id} target="_blank">Do it yourself</a>
         <a href={'/'} class="button button-secondary">See other spectrums</a>
       </div>
       <h2>About this spectrum</h2>
